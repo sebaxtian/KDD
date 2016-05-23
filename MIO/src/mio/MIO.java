@@ -177,11 +177,13 @@ public class MIO {
         // TODO code application logic here
         
         try {
+            
             // Pruebas con Libreria POI
             testNewWorkbook("workbook.xlsx");
             testNewSheet("PruebaNuevaHoja");
             testNewCell();
             iteratorRowsCells();
+            
         } catch (IOException ex) {
             System.err.println("Error al crear libro de trabajo en archivo Excel");
         } catch (InvalidFormatException ex) {
