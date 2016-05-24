@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import modelo.Extraccion;
+import modelo.ETL;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -340,10 +340,12 @@ public class MIO {
             //testEstacionRuta("/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas");
             
             String pathDirFuente = "/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas";
-            Extraccion E = new Extraccion(pathDirFuente);
+            ETL E = new ETL(pathDirFuente);
             E.execute();
-            E.printRutas();
-            E.printEstaciones();
+            //E.printRutas();
+            //E.printEstaciones();
+            E.printDimRutaEstacion();
+            E.printDimFecha();
             
         } catch (IOException ex) {
             System.err.println("Error al crear libro de trabajo en archivo Excel");
