@@ -5,9 +5,17 @@
  */
 package mio;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import modelo.Extraccion;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -51,7 +59,6 @@ public class MIO {
     /**
      * Prueba de crear un libro de trabajo en archivo Excel
      * @param nameFile
-     * @return Workbook
      * @throws java.io.IOException
      */
     public static void testNewWorkbook(String nameFile) throws IOException {
@@ -122,6 +129,11 @@ public class MIO {
     }
     
     
+    /**
+     * Prueba de Iteracion por cada Fila y Celda en cada Hoja de un Libro Excel.
+     * @throws IOException
+     * @throws InvalidFormatException 
+     */
     public static void iteratorRowsCells() throws IOException, InvalidFormatException {
         // These iterators are available by calling workbook.sheetIterator(),
         // sheet.rowIterator(), and row.cellIterator(), or implicitly using a for-each loop.
@@ -171,23 +183,174 @@ public class MIO {
     
     
     /**
+     * Prueba de leer directorio de Matrices de archivos Excel.
+     * @param pathDir
+     * @throws IOException
+     * @throws InvalidFormatException 
+     */
+    public static void testReadMatrix(String pathDir) throws IOException, InvalidFormatException {
+        // Directorio de archivos Excel
+        File dirMatrix = new File(pathDir);
+        // Verifica que sea un directorio
+        if(dirMatrix.isDirectory()) {
+            // Itera por cada archivo Excel del directorio
+            File[] listExcel = dirMatrix.listFiles();
+            for(int i = 0; i < listExcel.length; i++) {
+                File fileExcel = listExcel[i];
+                // Verifica que sea un archivo
+                if(fileExcel.isFile()) {
+                    // Crea un libro de trabajo por cada archivo Excel
+                    // BUILD SUCCESSFUL (total time: 5 minutes 42 seconds)
+                    Workbook libroExcel = WorkbookFactory.create(new FileInputStream(fileExcel.getAbsolutePath()));
+                    //BUILD SUCCESSFUL (total time: 5 minutes 38 seconds)
+                    //Workbook libroExcel = WorkbookFactory.create(fileExcel);
+                    System.out.println("Abre Libro Excel: " + fileExcel.getName());
+                    // Itera por cada hoja, fila y celda de un libro Excel
+                    for(Sheet hojaExcel : libroExcel ) {
+                        System.out.println("Abre Hoja: " + hojaExcel.getSheetName());
+                        for(Row fila : hojaExcel) {
+                            System.out.println("Lee Fila: " + fila.getRowNum());
+                            for(Cell celda : fila) {
+                                switch (celda.getCellType()) {
+                                    case Cell.CELL_TYPE_STRING:
+                                        System.out.println("Lee Celda: " + celda.getRichStringCellValue().getString());
+                                        break;
+                                    case Cell.CELL_TYPE_NUMERIC:
+                                        if (DateUtil.isCellDateFormatted(celda)) {
+                                            System.out.println("Lee Celda: " + celda.getDateCellValue());
+                                        } else {
+                                            System.out.println("Lee Celda: " + celda.getNumericCellValue());
+                                        }
+                                        break;
+                                    case Cell.CELL_TYPE_BOOLEAN:
+                                        System.out.println("Lee Celda: " + celda.getBooleanCellValue());
+                                        break;
+                                    case Cell.CELL_TYPE_FORMULA:
+                                        System.out.println("Lee Celda: " + celda.getCellFormula());
+                                        break;
+                                    default:
+                                        System.out.println();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    public static void testEstacionRuta(String pathDir) throws IOException, InvalidFormatException {
+        // Lista donde se guardan las estaciones y las rutas
+        ArrayList<String> listEstacionRuta = new ArrayList<>();
+        // Lista donde se guardan las rutas
+        ArrayList<String> listRutas = new ArrayList<>();
+        // Lista donde se guardan las estaciones
+        ArrayList<String> listEstaciones = new ArrayList<>();
+        // Directorio de archivos Excel
+        File dirMatrix = new File(pathDir);
+        // Verifica que sea un directorio
+        if(dirMatrix.isDirectory()) {
+            // Itera por cada archivo Excel del directorio
+            File[] listExcel = dirMatrix.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    String nombreArchivo = pathname.getName();
+                    if(nombreArchivo.substring(nombreArchivo.length()-4, nombreArchivo.length()).equals("xlsx")) {
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            for(int i = 0; i < listExcel.length; i++) {
+                File fileExcel = listExcel[i];
+                // Verifica que sea un archivo
+                if(fileExcel.isFile()) {
+                    System.out.println("Obtiene Archivo: " + fileExcel.getName());
+                    // Crea un libro de trabajo por cada archivo Excel
+                    // BUILD SUCCESSFUL (total time: 5 minutes 42 seconds)
+                    Workbook libroExcel = WorkbookFactory.create(new FileInputStream(fileExcel.getAbsolutePath()));
+                    //BUILD SUCCESSFUL (total time: 5 minutes 38 seconds)
+                    //Workbook libroExcel = WorkbookFactory.create(fileExcel);
+                    System.out.println("Abre Libro Excel: " + fileExcel.getName());
+                    // Itera por cada hoja, fila y celda de un libro Excel
+                    for(Sheet hojaExcel : libroExcel ) {
+                        //System.out.println("Abre Hoja: " + hojaExcel.getSheetName());
+                        // Obtiene la fila 0 donde se muestran los nombre de rutas y estaciones
+                        Row fila0 = hojaExcel.getRow(0);
+                        //System.out.println("Lee Fila: " + fila0.getRowNum());
+                        for(Cell celda : fila0) {
+                            // Los nombre de estacion y ruta son de tipo string
+                            if(celda.getCellType() == Cell.CELL_TYPE_STRING) {
+                                String estacionOruta = celda.getRichStringCellValue().getString();
+                                //System.out.println("estacionOruta = " + estacionOruta);
+                                // Se omiten valores
+                                if(!estacionOruta.equals("ORIGEN \\ DESTINO") && !estacionOruta.equals("TOTAL") && !estacionOruta.equals("SIN DATO") && !estacionOruta.equals("SIN HORARIO")) {
+                                    // Verifica que en la lista no se encuentre estacion o ruta
+                                    if(!listEstacionRuta.contains(estacionOruta)) {
+                                        listEstacionRuta.add(estacionOruta);
+                                        // Verifica que sea una Ruta
+                                        Pattern regex = Pattern.compile("[A-Z][0-9]");
+                                        Matcher matcher = regex.matcher(estacionOruta);
+                                        if(matcher.find()) {
+                                            listRutas.add(estacionOruta);
+                                        } else {
+                                            // Si no es una ruta es una Estacion
+                                            listEstaciones.add(estacionOruta);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // Cierra el stream
+                    libroExcel.close();
+                }
+            }
+        }
+        // Imprime la lista de estaciones y rutas
+        System.out.println("Lista de Estaciones y Rutas");
+        for (String next : listEstacionRuta) {
+            System.out.println(next);
+        }
+        System.out.println("Lista de Rutas");
+        for (String next : listRutas) {
+            System.out.println(next);
+        }
+        System.out.println("Lista de Estaciones");
+        for (String next : listEstaciones) {
+            System.out.println(next);
+        }
+    }
+    
+    
+    /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
         
         try {
-            
             // Pruebas con Libreria POI
-            testNewWorkbook("workbook.xlsx");
-            testNewSheet("PruebaNuevaHoja");
-            testNewCell();
-            iteratorRowsCells();
+            //testNewWorkbook("workbook.xlsx");
+            //testNewSheet("PruebaNuevaHoja");
+            //testNewCell();
+            //iteratorRowsCells();
+            //testReadMatrix("/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas");
+            //testEstacionRuta("/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas");
+            
+            String pathDirFuente = "/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas";
+            Extraccion E = new Extraccion(pathDirFuente);
+            E.execute();
+            E.printRutas();
+            E.printEstaciones();
             
         } catch (IOException ex) {
             System.err.println("Error al crear libro de trabajo en archivo Excel");
+            ex.printStackTrace();
         } catch (InvalidFormatException ex) {
-            System.err.println("Error al abrir libro de trabajo en archivo Excel");
+            System.err.println("Error al abrir libro de trabajo en archivo Excel ");
+            ex.printStackTrace();
         }
         
     }
