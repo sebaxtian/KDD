@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -55,7 +56,8 @@ public class ETL {
     private ArrayList<String> dimRutaEstacion;
     // Lista de INSERT INTO en dim_fecha
     private ArrayList<String> dimFecha;
-    
+    // Lista de INSERT INTO en dim_tiempo
+    private ArrayList<String> dimTiempo;
     
     /**
      * Metodo Contructor de clase
@@ -98,13 +100,16 @@ public class ETL {
                     // Crea un Libro de trabajo por cada archivo Excel
                     Workbook libroExcel = WorkbookFactory.create(new FileInputStream(fileExcel.getAbsolutePath()));
                     System.out.println("Abre Libro Excel: " + fileExcel.getName());
+                    // Se extrae la dimension Fecha
                     this.extraerFecha(fileExcel.getName());
                     // Itera por cada Hoja, Fila y Celda de un Libro Excel
                     for(Sheet hojaExcel : libroExcel ) {
+                        // Se extrae la dimension Tiempo
+                        this.extraerTiempo(hojaExcel.getSheetName());
                         for(Row fila : hojaExcel) {
                             // Si es la primera Fila de la Hoja
                             if(fila.getRowNum() == 0) {
-                                // Obtiene la fila 0 donde se muestran los nombre de Rutas y Estaciones
+                                // Se extrae la dimension Ruta-Estacion
                                 this.extraerRutaEstacion(fila);
                             } else {
                                 // Opera los datos de cantidad de pasajeros
@@ -122,6 +127,24 @@ public class ETL {
     }
     
     
+    
+    private void extraerTiempo(String nombreHoja) {
+        System.out.println("Hoja del Libro: " + nombreHoja);
+        nombreHoja = nombreHoja.substring(4, nombreHoja.length());
+        System.out.println("Franja Horaria: " + nombreHoja);
+        StringTokenizer strToken = new StringTokenizer(nombreHoja, "-");
+        int horaInicio = Integer.parseInt(strToken.nextToken());
+        int horaFin = Integer.parseInt(strToken.nextToken());
+        System.out.println(horaFin + " - " + horaInicio + " = " + (horaFin-horaInicio));
+    }
+    
+    
+    
+    /**
+     * Este metodo contruye la lista de INSERT INTO en dim_fecha.
+     * 
+     * @param nombreArchivo 
+     */
     private void extraerFecha(String nombreArchivo) {
         // Obtiene el nombre del libro
         String nombreLibro = nombreArchivo.substring(0, 2) + "-" + nombreArchivo.substring(2, 4) + "-" + nombreArchivo.substring(4, 6);
