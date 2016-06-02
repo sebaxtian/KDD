@@ -11,8 +11,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import modelo.ETL;
@@ -26,6 +24,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import static Connection.ConnectionSQL.conexBD;
 
 /**
  * Esta es la clase main del proyecto MIO,
@@ -41,7 +40,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * 
  * Rutas que mas pasajeros mueven
  * 
- * Franjas horarias donde mas hay movimiento de pasajerso
+ * Franjas horarias donde hay mas movimiento de pasajerso
  * 
  * Comparacion de la demanda en dias laborales, fines de
  * semana y dias festivos.
@@ -177,8 +176,7 @@ public class MIO {
                     }
                 }
             }
-        }
-        
+        }        
     }
     
     
@@ -330,6 +328,12 @@ public class MIO {
     public static void main(String[] args) {
         // TODO code application logic here
         
+        
+        String servidor=null,usuario=null,password=null;
+        if(args.length>2)
+        {servidor=args[0];usuario=args[1];password=args[2];}
+
+        conexBD.connect(servidor,usuario,password);
         try {
             // Pruebas con Libreria POI
             //testNewWorkbook("workbook.xlsx");
@@ -339,13 +343,18 @@ public class MIO {
             //testReadMatrix("/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas");
             //testEstacionRuta("/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas");
             
-            String pathDirFuente = "/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas";
+            //DIRECTORIO SEBASTIAN
+            //String pathDirFuente = "/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas";
+            
+            //DIRECTORIO RYAN
+            String pathDirFuente = "C:\\Users\\Shalóm\\Documents\\NetBeansProjects\\KDD\\BD_Excell";
             ETL E = new ETL(pathDirFuente);
             E.execute();
+            E.cargarFrecuencias();//
             //E.printRutas();
             //E.printEstaciones();
-            E.printDimRutaEstacion();
-            E.printDimFecha();
+            //E.printDimRutaEstacion();
+            //E.printDimFecha();
             
         } catch (IOException ex) {
             System.err.println("Error al crear libro de trabajo en archivo Excel");
@@ -353,8 +362,7 @@ public class MIO {
         } catch (InvalidFormatException ex) {
             System.err.println("Error al abrir libro de trabajo en archivo Excel ");
             ex.printStackTrace();
-        }
-        
+        }        
     }
     
 }
