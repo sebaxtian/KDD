@@ -1,1 +1,1 @@
-INSERT INTO frecuencias VALUES ,
+INSERT INTO frecuencias VALUES ;,

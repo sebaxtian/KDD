@@ -1,1 +1,0 @@
-INSERT INTO dim_fecha VALUES ,

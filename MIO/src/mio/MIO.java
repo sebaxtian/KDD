@@ -333,7 +333,7 @@ public class MIO {
         if(args.length>2)
         {servidor=args[0];usuario=args[1];password=args[2];}
 
-        conexBD.connect(servidor,usuario,password);
+        //conexBD.connect(servidor,usuario,password);
         try {
             // Pruebas con Libreria POI
             //testNewWorkbook("workbook.xlsx");
@@ -344,10 +344,10 @@ public class MIO {
             //testEstacionRuta("/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas");
             
             //DIRECTORIO SEBASTIAN
-            //String pathDirFuente = "/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas";
+            String pathDirFuente = "/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas";
             
             //DIRECTORIO RYAN
-            String pathDirFuente = "C:\\Users\\Shalóm\\Documents\\NetBeansProjects\\KDD\\BD_Excell";
+            //String pathDirFuente = "C:\\Users\\Shalóm\\Documents\\NetBeansProjects\\KDD\\BD_Excell";
             ETL E = new ETL(pathDirFuente);
             E.execute();
             E.cargarFrecuencias();//

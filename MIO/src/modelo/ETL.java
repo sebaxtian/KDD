@@ -9,10 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.Scanner;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -181,16 +178,20 @@ public class ETL {
                                 }
                                 String querysql=this.transform(); 
                                 //Para insertar a la BD
+                                /*
                                    if(conexBD.connected()&&!querysql.equals(""))
                                        conexBD.queryInsert("INSERT INTO abordaje VALUES "+querysql+';');
-                                //System.out.println(querysql);
-                                //archivos.insertAbordaje(querysql); //Para insertar datos al archivo
+                                */
+                                //System.out.println("INSERT INTO abordaje VALUES "+querysql+';');
+                                archivos.insertAbordaje(querysql); //Para insertar datos al archivo
                                 n_pasajeros=0;  
                             }
                         }
                     }
                     // Cierra el stream
                     libroExcel.close();
+                    libroExcel = null;
+                    fileExcel = null;
                     System.gc();
                 }
             }
@@ -202,14 +203,14 @@ public class ETL {
     //Extraer e insertar franjas horarias.
     private void extraerTiempo(String nombreHoja) {
         
-        System.out.println("Archivo: " + fecha);
-        System.out.println("Hoja del Libro: " + nombreHoja);
+        //System.out.println("Archivo: " + fecha);
+        //System.out.println("Hoja del Libro: " + nombreHoja);
         nombreHoja = nombreHoja.substring(4, nombreHoja.length());
-        System.out.println("Franja Horaria: " + nombreHoja);
+        //System.out.println("Franja Horaria: " + nombreHoja);
         StringTokenizer strToken = new StringTokenizer(nombreHoja, "-");
         int horaInicio = Integer.parseInt(strToken.nextToken());
         int horaFin = Integer.parseInt(strToken.nextToken());
-        System.out.println(horaFin + " - " + horaInicio + " = " + (horaFin-horaInicio));
+        //System.out.println(horaFin + " - " + horaInicio + " = " + (horaFin-horaInicio));
         //Se agrega funcionalidad para anexar las franjas horarias a la BD
         franja=nombreHoja;
         if(!listFranjas.contains(nombreHoja))

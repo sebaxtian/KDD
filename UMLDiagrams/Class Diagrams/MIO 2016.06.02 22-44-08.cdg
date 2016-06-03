@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="MIO">
+  <ClassDiagramComponents>
+    <Class name="ConnectionSQL" package="Connection" visibility="public" isFinal="true" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="conexBD" type="ConnectionSQL" visibility="public" isStatic="true"/>
+        <Field name="conexion" type="Connection" visibility="private"/>
+        <Field name="rs" type="ResultSet" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="connect" returnType="boolean" visibility="public">
+          <Argument type="String" name="s"/>
+          <Argument type="String" name="u"/>
+          <Argument type="String" name="p"/>
+        </Method>
+        <Method name="query" returnType="void" visibility="public">
+          <Argument type="String" name="q"/>
+        </Method>
+        <Method name="queryInsert" returnType="void" visibility="public">
+          <Argument type="String" name="q"/>
+        </Method>
+        <Method name="lastResult" returnType="ResultSet" visibility="public"/>
+        <Method name="disconnec" returnType="void" visibility="public"/>
+        <Method name="connected" returnType="boolean" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="MIO" package="mio" visibility="public" xPosition="320.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="testNewWorkbook" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="nameFile"/>
+        </Method>
+        <Method name="testNewSheet" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="nameSheet"/>
+        </Method>
+        <Method name="testNewCell" returnType="void" visibility="public" isStatic="true"/>
+        <Method name="iteratorRowsCells" returnType="void" visibility="public" isStatic="true"/>
+        <Method name="testReadMatrix" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="pathDir"/>
+        </Method>
+        <Method name="testEstacionRuta" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="pathDir"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="GestionArchivos" package="modelo" visibility="public" isFinal="true" xPosition="620.0" yPosition="20.0">
+      <Fields>
+        <Field name="dim_fecha" type="FileWriter" visibility="package"/>
+        <Field name="dim_tiempo" type="FileWriter" visibility="package"/>
+        <Field name="dim_rutas" type="FileWriter" visibility="package"/>
+        <Field name="abordaje" type="FileWriter" visibility="package"/>
+        <Field name="frecuencias" type="FileWriter" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="close" returnType="void" visibility="public"/>
+        <Method name="insertFrecuencia" returnType="void" visibility="public" isFinal="true">
+          <Argument type="String" name="sql"/>
+        </Method>
+        <Method name="insertFecha" returnType="void" visibility="public" isFinal="true">
+          <Argument type="String" name="sql"/>
+        </Method>
+        <Method name="insertTiempo" returnType="void" visibility="public">
+          <Argument type="String" name="sql"/>
+        </Method>
+        <Method name="insertRutas" returnType="void" visibility="public">
+          <Argument type="String" name="sql"/>
+        </Method>
+        <Method name="insertAbordaje" returnType="void" visibility="public">
+          <Argument type="String" name="sql"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="ETL" package="modelo" visibility="public" xPosition="920.0" yPosition="20.0">
+      <Fields>
+        <Field name="archivos" type="GestionArchivos" visibility="private"/>
+        <Field name="pathDirFuente" type="String" visibility="private"/>
+        <Field name="regex" type="Pattern" visibility="private" isStatic="true"/>
+        <Field name="listRutas" type="ArrayList&lt;String&gt;" visibility="private"/>
+        <Field name="listFranjas" type="ArrayList&lt;String&gt;" visibility="private"/>
+        <Field name="listEstaciones" type="ArrayList&lt;String&gt;" visibility="private"/>
+        <Field name="dimFecha" type="ArrayList&lt;String&gt;" visibility="private"/>
+        <Field name="dimTiempo" type="ArrayList&lt;String&gt;" visibility="private"/>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="estacion" type="Integer" visibility="private"/>
+        <Field name="fecha" type="String" visibility="private"/>
+        <Field name="franja" type="String" visibility="private"/>
+        <Field name="n_pasajeros" type="Integer" visibility="private"/>
+        <Field name="destino" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="pathDirFuente"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="transform" returnType="String" visibility="public"/>
+        <Method name="execute" returnType="void" visibility="public"/>
+        <Method name="extraerTiempo" returnType="void" visibility="private">
+          <Argument type="String" name="nombreHoja"/>
+        </Method>
+        <Method name="extraerFecha" returnType="void" visibility="private">
+          <Argument type="String" name="nombreArchivo"/>
+        </Method>
+        <Method name="buildDiasFestivos" returnType="Hashtable&lt;String, String&gt;" visibility="private"/>
+        <Method name="buildDiasFeriados" returnType="Hashtable&lt;String, String&gt;" visibility="private"/>
+        <Method name="extraerRutaEstacion" returnType="void" visibility="private">
+          <Argument type="Row" name="fila"/>
+        </Method>
+        <Method name="printRutas" returnType="void" visibility="public"/>
+        <Method name="printEstaciones" returnType="void" visibility="public"/>
+        <Method name="printDimFecha" returnType="void" visibility="public"/>
+        <Method name="cargarFrecuencias" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Frecuencias" package="modelo" visibility="public" xPosition="1220.0" yPosition="20.0">
+      <Fields>
+        <Field name="select_base" type="String" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="cantidadPasajeros" returnType="String" visibility="public">
+          <Argument type="String" name="fecha"/>
+          <Argument type="String" name="ruta"/>
+          <Argument type="String" name="franja"/>
+        </Method>
+        <Method name="crearWhere" returnType="String" visibility="private">
+          <Argument type="String" name="fecha"/>
+          <Argument type="String" name="ruta"/>
+          <Argument type="String" name="franja"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true" isFinal="true">
+          <Argument type="String[]" name="agrs"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="archivos" source="modelo.ETL" target="modelo.GestionArchivos" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="conexBD" source="Connection.ConnectionSQL" target="Connection.ConnectionSQL" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
