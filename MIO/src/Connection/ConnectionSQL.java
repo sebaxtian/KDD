@@ -38,7 +38,7 @@ public final class ConnectionSQL
         try 
         {
             if(s==null||u==null||p==null)
-                conexion = DriverManager.getConnection ("jdbc:mysql://localhost/bd_mio","root", "");
+                conexion = DriverManager.getConnection ("jdbc:mysql://localhost/DB_mio","root", "");
             else
                 conexion = DriverManager.getConnection (s,u, p);
             return true;
