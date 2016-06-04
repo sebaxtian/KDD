@@ -217,8 +217,8 @@ public class ETL {
         { //Para agregar al arraylist y archivos
             listFranjas.add(nombreHoja);
             archivos.insertTiempo("(null,'"+nombreHoja+"')");
-             //if(conn.connected())
-                    //conn.queryInsert("INSERT INTO dim_tiempo VALUES "+("(null,'"+nombreHoja+"')")+';');
+             //if(conexBD.connected())
+                    //conexBD.queryInsert("INSERT INTO dim_tiempo VALUES "+("(null,'"+nombreHoja+"')")+';');
         }
     }
     
@@ -338,8 +338,8 @@ public class ETL {
                     "')";
             
             dimFecha.add(insertinto);
-            //if(conn.connected())
-            //    conn.queryInsert("INSERT INTO dim_fecha VALUES "+insertinto+';');
+            //if(conexBD.connected())
+            //    conexBD.queryInsert("INSERT INTO dim_fecha VALUES "+insertinto+';');
             archivos.insertFecha(insertinto);           
             
         } catch (ParseException ex) {
@@ -511,8 +511,8 @@ public class ETL {
                             estacion=1;
                            // dimRutaEstacion.add("INSERT INTO dim_ruta_estacion VALUES (null,'" + estacionOruta + "', " + true + ");");
                             //Descomentar las dos líneas de código siguientes para conexión a BD e insertar datos (rutas) a la dimensión Ruta Estación
-                            //if(conn.connected())
-                            //    conn.queryInsert("INSERT INTO dim_ruta_estacion VALUES (null,'" + estacionOruta + "', " + true + ");");
+                            //if(conexBD.connected())
+                            //    conexBD.queryInsert("INSERT INTO dim_ruta_estacion VALUES (null,'" + estacionOruta + "', " + true + ");");
                             archivos.insertRutas("(null,'" + estacionOruta + "', " + true + ")");
                         }
                     } else { // Si no es una ruta es una Estacion
@@ -523,8 +523,8 @@ public class ETL {
                             estacion=0;
                             //dimRutaEstacion.add("INSERT INTO dim_ruta_estacion VALUES (null,'" + estacionOruta + "', " + false + ");");
                             //Descomentar las dos líneas de código siguientes para conexión a BD e insertar datos (Estaciones)  a la dimensión Ruta Estación
-                            //if(conn.connected())
-                            //    conn.queryInsert("INSERT INTO dim_ruta_estacion VALUES (null'" + estacionOruta + "', " + false + ");");
+                            //if(conexBD.connected())
+                            //    conexBD.queryInsert("INSERT INTO dim_ruta_estacion VALUES (null'" + estacionOruta + "', " + false + ");");
                             archivos.insertRutas("(null,'" + estacionOruta + "', " + false + ")");
                          }
                     }
@@ -582,8 +582,8 @@ public class ETL {
 
                         System.out.println(insertarFrecuencias);
                         archivos.insertFrecuencia(insertarFrecuencias);
-                        //if(conn.connected())
-                            //conn.queryInsert("INSERT INTO frecuencias "+insertarFrecuencias);
+                        //if(conexBD.connected())
+                            //conexBD.queryInsert("INSERT INTO frecuencias "+insertarFrecuencias);
                     }        
     }
 }
