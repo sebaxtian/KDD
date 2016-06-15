@@ -2,7 +2,7 @@
 
 <ClassDiagram name="MIO">
   <ClassDiagramComponents>
-    <Class name="ConnectionSQL" package="Connection" visibility="public" isFinal="true" xPosition="20.0" yPosition="20.0">
+    <Class name="ConnectionSQL" package="Connection" visibility="public" isFinal="true" xPosition="41.0" yPosition="37.0">
       <Fields>
         <Field name="conexBD" type="ConnectionSQL" visibility="public" isStatic="true"/>
         <Field name="conexion" type="Connection" visibility="private"/>
@@ -28,7 +28,7 @@
         <Method name="connected" returnType="boolean" visibility="public"/>
       </Methods>
     </Class>
-    <Class name="MIO" package="mio" visibility="public" xPosition="320.0" yPosition="20.0">
+    <Class name="MIO" package="mio" visibility="public" xPosition="62.0" yPosition="361.0">
       <Fields/>
       <Constructors/>
       <Methods>
@@ -51,7 +51,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="GestionArchivos" package="modelo" visibility="public" isFinal="true" xPosition="620.0" yPosition="20.0">
+    <Class name="GestionArchivos" package="modelo" visibility="public" isFinal="true" xPosition="434.0" yPosition="20.0">
       <Fields>
         <Field name="dim_fecha" type="FileWriter" visibility="package"/>
         <Field name="dim_tiempo" type="FileWriter" visibility="package"/>
@@ -81,7 +81,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="ETL" package="modelo" visibility="public" xPosition="920.0" yPosition="20.0">
+    <Class name="ETL" package="modelo" visibility="public" xPosition="760.0" yPosition="20.0">
       <Fields>
         <Field name="archivos" type="GestionArchivos" visibility="private"/>
         <Field name="pathDirFuente" type="String" visibility="private"/>
@@ -123,7 +123,7 @@
         <Method name="cargarFrecuencias" returnType="void" visibility="public"/>
       </Methods>
     </Class>
-    <Class name="Frecuencias" package="modelo" visibility="public" xPosition="1220.0" yPosition="20.0">
+    <Class name="Frecuencias" package="modelo" visibility="public" xPosition="1150.0" yPosition="54.0">
       <Fields>
         <Field name="select_base" type="String" visibility="private" isStatic="true" isFinal="true"/>
       </Fields>
