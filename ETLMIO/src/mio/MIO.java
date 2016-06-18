@@ -340,12 +340,13 @@ public class MIO {
             //testEstacionRuta("/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas");
             
             String pathDirFuente = "/home/sebaxtian/Descargas/MatricesSimplificadas";
-            ETL E = new ETL(pathDirFuente);
-            E.execute();
-            //E.printRutas();
-            //E.printEstaciones();
-            E.printDimRutaEstacion();
-            E.printDimFecha();
+            ETL etl = new ETL(pathDirFuente);
+            etl.execute();
+            
+            etl.printHashMapDimFecha();
+            etl.printHashMapDimTiempo();
+            etl.printHashMapDimRutaEstacion();
+            etl.printHashMapTablaFrecuencias();
             
         } catch (IOException ex) {
             System.err.println("Error al crear libro de trabajo en archivo Excel");
