@@ -1,0 +1,74 @@
+ant -f /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO -Dnb.internal.action.name=run run
+init:
+deps-jar:
+Created dir: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build
+Updating property file: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/built-jar.properties
+Created dir: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/classes
+Created dir: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/empty
+Created dir: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/generated-sources/ap-source-output
+Compiling 5 source files to /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/classes
+compile:
+run:
+Inicia Proceso ETL 06/18/2016 23:36:15
+Inicia carga de coneccion con base de datos mysql
+Exito al carga coneccion con base de datos MySQL
+Numero de Archivos Excel Para Procesar: 38
+Obtiene Archivo Excel: 150901.xlsx
+Abre Libro Excel: 150901.xlsx
+Numero de Archivos Excel por Procesar: 38
+Obtiene Archivo Excel: 150520.xlsx
+Abre Libro Excel: 150520.xlsx
+Numero de Archivos Excel por Procesar: 37
+Obtiene Archivo Excel: 140522.xlsx
+Abre Libro Excel: 140522.xlsx
+Numero de Archivos Excel por Procesar: 36
+Obtiene Archivo Excel: 140114.xlsx
+Abre Libro Excel: 140114.xlsx
+Numero de Archivos Excel por Procesar: 35
+Obtiene Archivo Excel: 140824.xlsx
+Abre Libro Excel: 140824.xlsx
+Numero de Archivos Excel por Procesar: 34
+Obtiene Archivo Excel: 141218.xlsx
+Abre Libro Excel: 141218.xlsx
+Numero de Archivos Excel por Procesar: 33
+Obtiene Archivo Excel: 150307.xlsx
+Abre Libro Excel: 150307.xlsx
+Numero de Archivos Excel por Procesar: 32
+Obtiene Archivo Excel: 150802.xlsx
+Abre Libro Excel: 150802.xlsx
+Numero de Archivos Excel por Procesar: 31
+Obtiene Archivo Excel: 150504.xlsx
+Abre Libro Excel: 150504.xlsx
+Numero de Archivos Excel por Procesar: 30
+Obtiene Archivo Excel: 140401.xlsx
+Abre Libro Excel: 140401.xlsx
+Numero de Archivos Excel por Procesar: 29
+Obtiene Archivo Excel: 140430.xlsx
+Abre Libro Excel: 140430.xlsx
+Numero de Archivos Excel por Procesar: 28
+Obtiene Archivo Excel: 140803.xlsx
+Abre Libro Excel: 140803.xlsx
+Numero de Archivos Excel por Procesar: 27
+Obtiene Archivo Excel: 140128.xlsx
+Abre Libro Excel: 140128.xlsx
+Numero de Archivos Excel por Procesar: 26
+Obtiene Archivo Excel: 141104.xlsx
+Abre Libro Excel: 141104.xlsx
+Numero de Archivos Excel por Procesar: 25
+Obtiene Archivo Excel: 140309.xlsx
+Abre Libro Excel: 140309.xlsx
+Numero de Archivos Excel por Procesar: 24
+Obtiene Archivo Excel: 140308.xlsx
+Abre Libro Excel: 140308.xlsx
+Numero de Archivos Excel por Procesar: 23
+Obtiene Archivo Excel: 150815.xlsx
+Abre Libro Excel: 150815.xlsx
+Numero de Archivos Excel por Procesar: 22
+Obtiene Archivo Excel: 150201.xlsx
+Abre Libro Excel: 150201.xlsx
+Numero de Archivos Excel por Procesar: 21
+Obtiene Archivo Excel: 140805.xlsx
+Abre Libro Excel: 140805.xlsx
+Numero de Archivos Excel por Procesar: 20
+Termina Proceso ETL 06/19/2016 00:45:45
+BUILD SUCCESSFUL (total time: 69 minutes 31 seconds)

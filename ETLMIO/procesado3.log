@@ -1,0 +1,32 @@
+ant -f /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO -Dnb.internal.action.name=run run
+init:
+deps-jar:
+Created dir: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build
+Updating property file: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/built-jar.properties
+Created dir: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/classes
+Created dir: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/empty
+Created dir: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/generated-sources/ap-source-output
+Compiling 5 source files to /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/classes
+compile:
+run:
+Inicia Proceso ETL 06/19/2016 12:40:54
+Inicia carga de coneccion con base de datos mysql
+Exito al carga coneccion con base de datos MySQL
+Numero de Archivos Excel Para Procesar: 9
+Obtiene Archivo Excel: 140515.xlsx
+Abre Libro Excel: 140515.xlsx
+Numero de Archivos Excel por Procesar: 9
+Obtiene Archivo Excel: 150428.xlsx
+Abre Libro Excel: 150428.xlsx
+Numero de Archivos Excel por Procesar: 8
+Obtiene Archivo Excel: 140303.xlsx
+Abre Libro Excel: 140303.xlsx
+Numero de Archivos Excel por Procesar: 7
+Obtiene Archivo Excel: 150202.xlsx
+Abre Libro Excel: 150202.xlsx
+Numero de Archivos Excel por Procesar: 6
+Obtiene Archivo Excel: 150509.xlsx
+Abre Libro Excel: 150509.xlsx
+Numero de Archivos Excel por Procesar: 5
+Termina Proceso ETL 06/19/2016 13:00:44
+BUILD SUCCESSFUL (total time: 19 minutes 50 seconds)
