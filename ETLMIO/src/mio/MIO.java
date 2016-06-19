@@ -10,12 +10,17 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import modelo.ETL;
+import modelo.ProcesadorETL;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -61,18 +66,20 @@ public class MIO {
      * @param nameFile
      * @throws java.io.IOException
      */
+    /*
     public static void testNewWorkbook(String nameFile) throws IOException {
         Workbook wb = new XSSFWorkbook();
         FileOutputStream fileOut = new FileOutputStream(nameFile);
         wb.write(fileOut);
     }
-    
+    */
     
     /**
      * Prueba de crear hojas sobre un libro de trabajo Excel
      * @param nameSheet
      * @throws java.io.IOException
      */
+    /*
     public static void testNewSheet(String nameSheet) throws IOException {
         Workbook wb = new XSSFWorkbook();
         Sheet sheet = wb.createSheet(nameSheet);
@@ -98,12 +105,14 @@ public class MIO {
         wb.write(fileOut);
         fileOut.close();
     }
+    */
     
     
     /**
      * Prueba de crear celdas sobre hojas de libro Excel
      * @throws java.io.IOException
      */
+    /*
     public static void testNewCell() throws IOException {
         //Workbook wb = new HSSFWorkbook();
         Workbook wb = new XSSFWorkbook();
@@ -127,13 +136,14 @@ public class MIO {
         wb.write(fileOut);
         fileOut.close();
     }
-    
+    */
     
     /**
      * Prueba de Iteracion por cada Fila y Celda en cada Hoja de un Libro Excel.
      * @throws IOException
      * @throws InvalidFormatException 
      */
+    /*
     public static void iteratorRowsCells() throws IOException, InvalidFormatException {
         // These iterators are available by calling workbook.sheetIterator(),
         // sheet.rowIterator(), and row.cellIterator(), or implicitly using a for-each loop.
@@ -180,7 +190,7 @@ public class MIO {
         }
         
     }
-    
+    */
     
     /**
      * Prueba de leer directorio de Matrices de archivos Excel.
@@ -188,6 +198,7 @@ public class MIO {
      * @throws IOException
      * @throws InvalidFormatException 
      */
+    /*
     public static void testReadMatrix(String pathDir) throws IOException, InvalidFormatException {
         // Directorio de archivos Excel
         File dirMatrix = new File(pathDir);
@@ -238,8 +249,9 @@ public class MIO {
             }
         }
     }
+    */
     
-    
+    /*
     public static void testEstacionRuta(String pathDir) throws IOException, InvalidFormatException {
         // Lista donde se guardan las estaciones y las rutas
         ArrayList<String> listEstacionRuta = new ArrayList<>();
@@ -322,6 +334,75 @@ public class MIO {
             System.out.println(next);
         }
     }
+    */
+    
+    /*
+    public static void pruebaHilos(String pathDirFuente) {
+        // Directorio de archivos Excel fuente
+        File dirFuente = new File(pathDirFuente);
+        // Verifica que sea un directorio
+        if(dirFuente.isDirectory()) {
+            // Obtiene la lista de archivos Excel del directorio
+            File[] listExcel = dirFuente.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    // Filtro, los archivos deben tener extension .xlsx
+                    String nombreArchivo = pathname.getName();
+                    if(nombreArchivo.substring(nombreArchivo.length()-4, nombreArchivo.length()).equals("xlsx")) {
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            // Itera cada archivo Excel del directorio
+            for(int i = 0; i < 3; i++) {
+                // Obtiene archivo Excel i
+                File fileExcel = listExcel[i];
+                // Crea un Hilo para procesar cada archivo Excel
+                ProcesadorETL etl = new ProcesadorETL(fileExcel.getAbsolutePath());
+                new Thread(etl).start();
+            }
+        }
+    }
+    */
+    
+    
+    
+    public static void testProcesadorETL() {
+        String pathDirFuente = "/home/sebaxtian/Descargas/MatricesSimplificadas";
+        String pathDirProcesados = "/home/sebaxtian/Descargas/MatricesProcesadas";
+        // Directorio de archivos Excel fuente
+        File dirFuente = new File(pathDirFuente);
+        // Verifica que sea un directorio
+        if(dirFuente.isDirectory()) {
+            // Obtiene la lista de archivos Excel del directorio
+            File[] listExcel = dirFuente.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    // Filtro, los archivos deben tener extension .xlsx
+                    String nombreArchivo = pathname.getName();
+                    if(nombreArchivo.substring(nombreArchivo.length()-4, nombreArchivo.length()).equals("xlsx")) {
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            // Itera cada archivo Excel del directorio
+            for(int i = 0; i < listExcel.length; i++) {
+                // Obtiene archivo Excel i
+                File fileExcel = listExcel[i];
+                // Crea un Hilo para procesar cada archivo Excel
+                ProcesadorETL etl = new ProcesadorETL(fileExcel.getAbsolutePath(), pathDirProcesados);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    System.err.println("Error al dormir Hilo de ejecucion");
+                }
+                new Thread(etl).start();
+            }
+        }
+    }
+    
     
     
     /**
@@ -329,6 +410,7 @@ public class MIO {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        //testProcesadorETL();
         
         try {
             // Pruebas con Libreria POI
@@ -338,15 +420,34 @@ public class MIO {
             //iteratorRowsCells();
             //testReadMatrix("/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas");
             //testEstacionRuta("/home/sebaxtian/Dropbox/Cloud/Sebaxtian/Documentos/Universia/2016-I/KDD/MatricesSimplificadas");
+            Date fechaInicio = new Date();
+            
+            SimpleDateFormat dateFormatter = new SimpleDateFormat();
+            
+            dateFormatter.applyPattern("MM/dd/yyyy");
+            String fecha = dateFormatter.format(fechaInicio);
+            dateFormatter.applyPattern("HH:mm:ss");
+            String hora = dateFormatter.format(fechaInicio);
+            
+            System.out.println("Inicia Proceso ETL " + fecha + " " + hora);
+            
             
             String pathDirFuente = "/home/sebaxtian/Descargas/MatricesSimplificadas";
-            ETL etl = new ETL(pathDirFuente);
+            String pathDirProcesados = "/home/sebaxtian/Descargas/MatricesProcesadas";
+            
+            ETL etl = new ETL(pathDirFuente, pathDirProcesados);
+            
             etl.execute();
             
-            etl.printHashMapDimFecha();
-            etl.printHashMapDimTiempo();
-            etl.printHashMapDimRutaEstacion();
-            etl.printHashMapTablaFrecuencias();
+            Date fechaFin = new Date();
+            
+            dateFormatter.applyPattern("MM/dd/yyyy");
+            fecha = dateFormatter.format(fechaFin);
+            dateFormatter.applyPattern("HH:mm:ss");
+            hora = dateFormatter.format(fechaFin);
+            
+            System.out.println("Termina Proceso ETL " + fecha + " " + hora);
+            
             
         } catch (IOException ex) {
             System.err.println("Error al crear libro de trabajo en archivo Excel");

@@ -9,6 +9,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,19 +45,34 @@ public class ETL {
 
     // Path del directorio de archivos Excel fuente
     private String pathDirFuente;
+    // Path del directorio de archivos Excel ya Procesados
+    private String pathDirProcesados;
     
     // Hashmap para las dimensiones
-    private HashMap<String, String> dim_fecha;
-    private HashMap<String, String> dim_tiempo;
-    private HashMap<String, String> dim_ruta_estacion;
+    //private HashMap<String, String> dim_fecha;
+    //private HashMap<String, String> dim_tiempo;
+    //private HashMap<String, String> dim_ruta_estacion;
     
     // Hashmap para tabla de hechos
-    private HashMap<String, String> tabla_frecuencias;
+    //private HashMap<String, String> tabla_frecuencias;
     
     
     // Variables temporales
-    private String tmpFecha;
-    private String tmpTiempo;
+    //private String tmpFecha;
+    //private String tmpTiempo;
+    
+    
+    // ID generado en cada insert de dimension
+    private int id_fecha;
+    private int id_tiempo;
+    
+    
+    // Coneccion a Base de Datos
+    private ConnectionDB connectionDB;
+    
+    
+    // Numero maximo de horas en la dimension tiempo
+    private int maxTiempo;
     
     
     /**
@@ -62,21 +80,36 @@ public class ETL {
      * Recibe como argumento el path del directorio de archivos Excel fuente.
      * 
      * @param pathDirFuente 
+     * @param pathDirProcesados 
      */
-    public ETL(String pathDirFuente) {
+    public ETL(String pathDirFuente, String pathDirProcesados) {
         // Path del directorio de archivos Excel fuente
         this.pathDirFuente = pathDirFuente;
-        
+        // Path del directorio de archivos Excel ya Procesados
+        this.pathDirProcesados = pathDirProcesados;
         // Hashmap para las dimensiones
-        this.dim_fecha = new HashMap<>();
-        this.dim_tiempo = new HashMap<>();
-        this.dim_ruta_estacion = new HashMap<>();
+        //this.dim_fecha = new HashMap<>();
+        //this.dim_tiempo = new HashMap<>();
+        //this.dim_ruta_estacion = new HashMap<>();
         
         // Hashmap para tabla de hechos
-        this.tabla_frecuencias = new HashMap<>();
+        //this.tabla_frecuencias = new HashMap<>();
+        
+        // Coneccion a Base de Datos
+        this.connectionDB = new ConnectionDB(ConnectionDB.DBMSMYSQL, "localhost", 3306, "ETLMIO", "root", "sebaxtian");
+        
+        // Numero maximo de horas en la dimension tiempo
+        this.maxTiempo = 0;
     }
     
     
+    
+    /**
+     * Este metodo se encarga de realizar el proceso ETL.
+     * 
+     * @throws IOException
+     * @throws InvalidFormatException 
+     */
     public void execute() throws IOException, InvalidFormatException {
         // Directorio de archivos Excel fuente
         File dirFuente = new File(this.pathDirFuente);
@@ -94,12 +127,16 @@ public class ETL {
                     return false;
                 }
             });
+            // Imprime cuantos archivos de Excel tiene que procesar
+            int numArchivosExcel = listExcel.length;
+            System.out.println("Numero de Archivos Excel Para Procesar: " + numArchivosExcel);
             // Itera cada archivo Excel del directorio
-            for(int i = 0; i < listExcel.length; i++) {
+            for(int i = 0; i < numArchivosExcel; i++) {
                 // Obtiene archivo Excel i
                 File fileExcel = listExcel[i];
                 // Verifica que sea un archivo
                 if(fileExcel.isFile()) {
+                    
                     System.out.println("Obtiene Archivo Excel: " + fileExcel.getName());
                     // Crea un Libro de trabajo por cada archivo Excel
                     Workbook libroExcel = WorkbookFactory.create(new FileInputStream(fileExcel.getAbsolutePath()));
@@ -111,8 +148,11 @@ public class ETL {
                     // Itera por cada Hoja, Fila y Celda de un Libro Excel
                     for(Sheet hojaExcel : libroExcel ) {
                         
-                        // Se extrae la dimension Tiempo
-                        this.extraerDimTiempo(hojaExcel.getSheetName());
+                        // Si no se han cargado las 20 horas
+                        if(maxTiempo < 20) {
+                            // Se extrae la dimension Tiempo
+                            this.extraerDimTiempo(hojaExcel.getSheetName());
+                        }
                         
                         for(Row fila : hojaExcel) {
                             
@@ -147,7 +187,16 @@ public class ETL {
                                 }
                                 
                                 // Se extrae la tabla de hechos Frecuencias
-                                this.extraerTablaFrecuencias(tmpFecha, tmpTiempo, estacionOruta, cantPasajeros);
+                                //this.extraerTablaFrecuencias(tmpFecha, tmpTiempo, estacionOruta, cantPasajeros);
+                                // Select en dim_ruta_estacion del id_ruta_estacion
+                                int id_ruta_estacion = connectionDB.selectIdRutaEstacion(estacionOruta);
+                                if(id_ruta_estacion != -1 && id_ruta_estacion != 0) {
+                                    if(id_fecha != -1 && id_fecha != 0) {
+                                        if(id_tiempo != -1 && id_tiempo != 0) {
+                                            this.extraerTablaFrecuencias(id_fecha, id_tiempo, id_ruta_estacion, cantPasajeros);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -157,9 +206,13 @@ public class ETL {
                     libroExcel = null;
                     System.gc();
                 }
+                // Mueve el archivo Excel que ya ha sido Procesado
+                Files.move(FileSystems.getDefault().getPath(fileExcel.getAbsolutePath()), FileSystems.getDefault().getPath(this.pathDirProcesados+"/"+fileExcel.getName()), StandardCopyOption.REPLACE_EXISTING);
                 // Libera Recursos
                 fileExcel = null;
                 System.gc();
+                // Imprime cuantos archivos Excel faltan procesar
+                System.out.println("Numero de Archivos Excel por Procesar: " + (numArchivosExcel--));
             }
         }
     }
@@ -179,11 +232,11 @@ public class ETL {
         String fechaBruta = nombreArchivo.substring(0, 6);
         
         // Actualiza variable temporal de fecha
-        tmpFecha = fechaBruta;
+        //tmpFecha = fechaBruta;
         
         try {
             // Valida que la llave no exista
-            if(!dim_fecha.containsKey(fechaBruta)) {
+            //if(!dim_fecha.containsKey(fechaBruta)) {
                 // Fecha con formato limpio
                 String fechaLimpia = nombreArchivo.substring(0, 2) + "-" + nombreArchivo.substring(2, 4) + "-" + nombreArchivo.substring(4, 6);
                 
@@ -268,19 +321,24 @@ public class ETL {
                 //System.out.println("Dia Feriado: " + nombreFeriado);
                 
                 // String SQL INSERT INTO
-                String insertinto = "INSERT INTO dim_fecha VALUES ('" +
+                String insertinto = "INSERT INTO dim_fecha "
+                        + "(fecha_bruta, fecha_limpia, anio, mes, nombre_mes, "
+                        + "semana_anio, semana_mes, dia_anio, dia, dia_semana_mes, "
+                        + "nombre_dia, numero_dia_semana, es_festivo, nombre_festivo, "
+                        + "es_feriado, nombre_feriado) "
+                        + "VALUES ('" +
                         fechaBruta + "', '" +
-                        strFechaLibro + "', '" +
-                        anio + "', '" +
-                        mes + "', '" +
-                        nombreMes + "', '" +
-                        semanaAnio + "', '" +
-                        semanaMes + "', '" +
-                        diaAnio + "', '" +
-                        dia + "', '" +
-                        diaSemanaMes + "', '" +
-                        nombreDia + "', '" +
-                        numDiaSemana + "', " +
+                        strFechaLibro + "', " +
+                        anio + ", " +
+                        mes + ", '" +
+                        nombreMes + "', " +
+                        semanaAnio + ", " +
+                        semanaMes + ", " +
+                        diaAnio + ", " +
+                        dia + ", " +
+                        diaSemanaMes + ", '" +
+                        nombreDia + "', " +
+                        numDiaSemana + ", " +
                         esFestivo + ", '" +
                         nombreFestivo + "', " +
                         esFeriado + ", '" +
@@ -288,9 +346,11 @@ public class ETL {
                         "');";
                 
                 // Agrega un nuevo dato al HashMap
-                dim_fecha.put(fechaBruta, insertinto);
+                //dim_fecha.put(fechaBruta, insertinto);
                 
-            }
+                // Inserta el Registro en la Tabla dim_fecha
+                id_fecha = connectionDB.insertDimFecha(fechaBruta, insertinto);
+            //}
             
             
         } catch (ParseException ex) {
@@ -314,10 +374,10 @@ public class ETL {
         String tiempoBruto = nombreHoja.substring(4, nombreHoja.length());
         
         // Actualiza variable temporal de tiempo
-        tmpTiempo = tiempoBruto;
+        //tmpTiempo = tiempoBruto;
         
         // Valida que la llave no exista
-        if(!dim_tiempo.containsKey(tiempoBruto)) {
+        //if(!dim_tiempo.containsKey(tiempoBruto)) {
             // Obtiene las horas del tiempo bruto
             StringTokenizer strToken = new StringTokenizer(tiempoBruto, "-");
             int horaInicio = Integer.parseInt(strToken.nextToken());
@@ -328,11 +388,23 @@ public class ETL {
             // Valida que la diferencia de tiempo sea 1 hora
             if(deltaTiempo == 1) {
                 // String SQL INSERT INTO
-                String insertinto = "INSERT INTO dim_tiempo VALUES ('" + tiempoBruto + "', '" + horaInicio + "', '" + horaFin + "');";
+                String insertinto = "INSERT INTO dim_tiempo (tiempo_bruto, "
+                        + "hora_inicio, hora_fin) "
+                        + "VALUES ('" 
+                        + tiempoBruto + "', " 
+                        + horaInicio + ", " 
+                        + horaFin + ");";
+                
                 // Agrega un nuevo dato al HashMap
-                dim_tiempo.put(tiempoBruto, insertinto);
+                //dim_tiempo.put(tiempoBruto, insertinto);
+                
+                // Inserta el Registro en la Tabla dim_tiempo
+                id_tiempo = connectionDB.insertDimTiempo(tiempoBruto, insertinto);
+                
+                // Numero maximo de horas en la dimension tiempo
+                this.maxTiempo++;
             }
-        }
+        //}
         
     }
     
@@ -354,23 +426,29 @@ public class ETL {
                 // Se omiten valores
                 if(!estacionOruta.equals("ORIGEN \\ DESTINO") && !estacionOruta.equals("TOTAL") && !estacionOruta.equals("SIN DATO") && !estacionOruta.equals("SIN HORARIO")) {
                     // Valida que la llave no exista
-                    if(!dim_ruta_estacion.containsKey(estacionOruta)) {
+                    //if(!dim_ruta_estacion.containsKey(estacionOruta)) {
                         // Verifica que sea una Ruta
                         Pattern regex = Pattern.compile("[A-Z][0-9]");
                         Matcher matcher = regex.matcher(estacionOruta);
                         // Si es una Ruta
                         if(matcher.find()) {
                             // String SQL INSERT INTO
-                            String insertinto = "INSERT INTO dim_ruta_estacion VALUES ('" + estacionOruta + "', " + true + ");";
+                            String insertinto = "INSERT INTO dim_ruta_estacion (nombre_ruta_estacion, es_ruta) VALUES ('" + estacionOruta + "', " + true + ");";
                             // Agrega un nuevo dato al HashMap
-                            dim_ruta_estacion.put(estacionOruta, insertinto);
+                            //dim_ruta_estacion.put(estacionOruta, insertinto);
+                            
+                            // Inserta el Registro en la Tabla dim_ruta_estacion
+                            connectionDB.insertDimRutaEstacion(estacionOruta, insertinto);
                         } else { // Si no es una ruta es una Estacion
                             // String SQL INSERT INTO
-                            String insertinto = "INSERT INTO dim_ruta_estacion VALUES ('" + estacionOruta + "', " + false + ");";
+                            String insertinto = "INSERT INTO dim_ruta_estacion (nombre_ruta_estacion, es_ruta) VALUES ('" + estacionOruta + "', " + false + ");";
                             // Agrega un nuevo dato al HashMap
-                            dim_ruta_estacion.put(estacionOruta, insertinto);
+                            //dim_ruta_estacion.put(estacionOruta, insertinto);
+                            
+                            // Inserta el Registro en la Tabla dim_ruta_estacion
+                            connectionDB.insertDimRutaEstacion(estacionOruta, insertinto);
                         }
-                    }
+                    //}
                 }
             }
         }
@@ -398,12 +476,50 @@ public class ETL {
     private void extraerTablaFrecuencias(String fecha, String franjaHoraria, String estacionOruta, int cantPasajeros) {
         String llave = fecha + "&" + franjaHoraria + "&" + estacionOruta;
         // Valida que la llave no exista
-        if(!tabla_frecuencias.containsKey(llave)) {
+        //if(!tabla_frecuencias.containsKey(llave)) {
             // String SQL INSERT INTO
-            String insertinto = "INSERT INTO frecuencias VALUES ('" + fecha + "', '" + franjaHoraria + "', '" + estacionOruta + "', " + cantPasajeros + ");";
+            String insertinto = "INSERT INTO frecuencias VALUES (" + fecha + ", " + franjaHoraria + ", " + estacionOruta + ", " + cantPasajeros + ");";
             // Agrega un nuevo dato al HashMap
-            tabla_frecuencias.put(llave, insertinto);
-        }
+            //tabla_frecuencias.put(llave, insertinto);
+            
+            // Select en dim_ruta_estacion del id_ruta_estacion
+            int id_ruta_estacion = connectionDB.selectIdRutaEstacion(estacionOruta);
+            if(id_ruta_estacion != -1 && id_ruta_estacion != 0) {
+                if(id_fecha != -1 && id_fecha != 0) {
+                    if(id_tiempo != -1 && id_tiempo != 0) {
+                        this.extraerTablaFrecuencias(id_fecha, id_tiempo, id_ruta_estacion, cantPasajeros);
+                    }
+                }
+            }
+        //}
+    }
+    
+    
+    
+    
+    /**
+     * Este metodo construye el HashMap de la Tabla de Hechos Frecuencias.
+     * 
+     * La llave del HashMap corresponde a una llave compuesta por las llaves
+     * de fecha, franjaHoraria, estacionOruta.
+     * 
+     * El valor del HashMap corresponde a un String SQL INSERT INTO.
+     * 
+     * Ejemplo:
+     * 
+     * [id_fecha&id_tiempo&id_ruta_estacion] -> "INSERT INTO frecuencias VALUES (fecha, franjaHoraria, estacionOruta, cantPasajeros);"
+     * 
+     * @param fecha
+     * @param franjaHoraria
+     * @param estacionOruta
+     * @param cantPasajeros 
+     */
+    private void extraerTablaFrecuencias(int id_fecha, int id_tiempo, int id_ruta_estacion, int cantPasajeros) {
+        // String SQL INSERT INTO
+        String insertinto = "INSERT INTO frecuencias (fk_fecha, fk_tiempo, fk_ruta_estacion, cant_pasajeros) "
+                + "VALUES (" + id_fecha + ", " + id_tiempo + ", " + id_ruta_estacion + ", " + cantPasajeros + ");";
+        // Inserta el Registro en la Tabla dim_ruta_estacion
+        connectionDB.insertTablaFrecuencias(insertinto);
     }
     
     
@@ -526,11 +642,13 @@ public class ETL {
      */
     public void printHashMapDimFecha() {
         System.out.println("HashMap Dimension Fecha");
+        /*
         for (Map.Entry<String, String> entry : dim_fecha.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             System.out.println("[" + key + "] -> " + value);
         }
+        */
         System.out.println("");
     }
     
@@ -542,11 +660,13 @@ public class ETL {
      */
     public void printHashMapDimTiempo() {
         System.out.println("HashMap Dimension Tiempo");
+        /*
         for (Map.Entry<String, String> entry : dim_tiempo.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             System.out.println("[" + key + "] -> " + value);
         }
+        */
         System.out.println("");
     }
     
@@ -558,11 +678,13 @@ public class ETL {
      */
     public void printHashMapDimRutaEstacion() {
         System.out.println("HashMap Dimension Ruta-Estacion");
+        /*
         for (Map.Entry<String, String> entry : dim_ruta_estacion.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             System.out.println("[" + key + "] -> " + value);
         }
+        */
         System.out.println("");
     }
     
@@ -574,11 +696,13 @@ public class ETL {
      */
     public void printHashMapTablaFrecuencias() {
         System.out.println("HashMap Tabla Frecuencias");
+        /*
         for (Map.Entry<String, String> entry : tabla_frecuencias.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             System.out.println("[" + key + "] -> " + value);
         }
+        */
         System.out.println("");
     }
     
