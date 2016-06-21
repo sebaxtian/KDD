@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="title" type="java.lang.String" value="Rutas"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jScrollPane1" pref="176" max="32767" attributes="0"/>
+                  <Component id="jButton1" alignment="0" pref="176" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="249" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JList" name="jList1">
+          <Properties>
+            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+              <StringArray count="209">
+                <StringItem index="0" value="A01A"/>
+                <StringItem index="1" value="A02_1"/>
+                <StringItem index="2" value="A02_2"/>
+                <StringItem index="3" value="A03"/>
+                <StringItem index="4" value="A04_1"/>
+                <StringItem index="5" value="A04_2"/>
+                <StringItem index="6" value="A05_1"/>
+                <StringItem index="7" value="A05_2"/>
+                <StringItem index="8" value="A06_1"/>
+                <StringItem index="9" value="A06_2"/>
+                <StringItem index="10" value="A07A_1"/>
+                <StringItem index="11" value="A07A_2"/>
+                <StringItem index="12" value="A07B"/>
+                <StringItem index="13" value="A11_1"/>
+                <StringItem index="14" value="A11_2"/>
+                <StringItem index="15" value="A12A"/>
+                <StringItem index="16" value="A12B_1"/>
+                <StringItem index="17" value="A12B_2"/>
+                <StringItem index="18" value="A12C_1"/>
+                <StringItem index="19" value="A12C_2"/>
+                <StringItem index="20" value="A12D_1"/>
+                <StringItem index="21" value="A12D_2"/>
+                <StringItem index="22" value="A13A"/>
+                <StringItem index="23" value="A13B"/>
+                <StringItem index="24" value="A13C"/>
+                <StringItem index="25" value="A14A_1"/>
+                <StringItem index="26" value="A14A_2"/>
+                <StringItem index="27" value="A17A"/>
+                <StringItem index="28" value="A17B_1"/>
+                <StringItem index="29" value="A17B_2"/>
+                <StringItem index="30" value="A18_1"/>
+                <StringItem index="31" value="A18_2"/>
+                <StringItem index="32" value="A19A_1"/>
+                <StringItem index="33" value="A19A_2"/>
+                <StringItem index="34" value="A19B_1"/>
+                <StringItem index="35" value="A19B_2"/>
+                <StringItem index="36" value="A21_1"/>
+                <StringItem index="37" value="A21_2"/>
+                <StringItem index="38" value="A22"/>
+                <StringItem index="39" value="A23"/>
+                <StringItem index="40" value="A24_1"/>
+                <StringItem index="41" value="A24_2"/>
+                <StringItem index="42" value="A31_1"/>
+                <StringItem index="43" value="A31_2"/>
+                <StringItem index="44" value="A32"/>
+                <StringItem index="45" value="A33_1"/>
+                <StringItem index="46" value="A33_2"/>
+                <StringItem index="47" value="A34_1"/>
+                <StringItem index="48" value="A34_2"/>
+                <StringItem index="49" value="A35A"/>
+                <StringItem index="50" value="A35B_1"/>
+                <StringItem index="51" value="A35B_2"/>
+                <StringItem index="52" value="A36_1"/>
+                <StringItem index="53" value="A36_2"/>
+                <StringItem index="54" value="A37A"/>
+                <StringItem index="55" value="A37B_1"/>
+                <StringItem index="56" value="A37B_2"/>
+                <StringItem index="57" value="A41A_1"/>
+                <StringItem index="58" value="A41A_2"/>
+                <StringItem index="59" value="A41B_1"/>
+                <StringItem index="60" value="A41B_2"/>
+                <StringItem index="61" value="A42A_1"/>
+                <StringItem index="62" value="A42A_2"/>
+                <StringItem index="63" value="A42B_1"/>
+                <StringItem index="64" value="A42B_2"/>
+                <StringItem index="65" value="A44A"/>
+                <StringItem index="66" value="A44B_1"/>
+                <StringItem index="67" value="A44B_2"/>
+                <StringItem index="68" value="A45A_1"/>
+                <StringItem index="69" value="A45A_2"/>
+                <StringItem index="70" value="A45B_1"/>
+                <StringItem index="71" value="A45B_2"/>
+                <StringItem index="72" value="A47_1"/>
+                <StringItem index="73" value="A47_2"/>
+                <StringItem index="74" value="A52"/>
+                <StringItem index="75" value="A53_1"/>
+                <StringItem index="76" value="A53_2"/>
+                <StringItem index="77" value="A55_1"/>
+                <StringItem index="78" value="A55_2"/>
+                <StringItem index="79" value="A56_1"/>
+                <StringItem index="80" value="A56_2"/>
+                <StringItem index="81" value="A57_1"/>
+                <StringItem index="82" value="A57_2"/>
+                <StringItem index="83" value="A70"/>
+                <StringItem index="84" value="A71_1"/>
+                <StringItem index="85" value="A71_2"/>
+                <StringItem index="86" value="A72A"/>
+                <StringItem index="87" value="A72B"/>
+                <StringItem index="88" value="A73_1"/>
+                <StringItem index="89" value="A73_2"/>
+                <StringItem index="90" value="A75_1"/>
+                <StringItem index="91" value="A75_2"/>
+                <StringItem index="92" value="A76"/>
+                <StringItem index="93" value="A77"/>
+                <StringItem index="94" value="A78A"/>
+                <StringItem index="95" value="A84A_1"/>
+                <StringItem index="96" value="A84A_2"/>
+                <StringItem index="97" value="A85_1"/>
+                <StringItem index="98" value="A85_2"/>
+                <StringItem index="99" value="A86_1"/>
+                <StringItem index="100" value="A86_2"/>
+                <StringItem index="101" value="E27_1"/>
+                <StringItem index="102" value="E27_2"/>
+                <StringItem index="103" value="E27B_1"/>
+                <StringItem index="104" value="E27B_2"/>
+                <StringItem index="105" value="E52_1"/>
+                <StringItem index="106" value="E52_2"/>
+                <StringItem index="107" value="P10A_1"/>
+                <StringItem index="108" value="P10A_2"/>
+                <StringItem index="109" value="P10B_1"/>
+                <StringItem index="110" value="P10B_2"/>
+                <StringItem index="111" value="P10D_1"/>
+                <StringItem index="112" value="P10D_2"/>
+                <StringItem index="113" value="P12A_1"/>
+                <StringItem index="114" value="P12A_2"/>
+                <StringItem index="115" value="P14A_1"/>
+                <StringItem index="116" value="P14A_2"/>
+                <StringItem index="117" value="P17_1"/>
+                <StringItem index="118" value="P17_2"/>
+                <StringItem index="119" value="P21A_1"/>
+                <StringItem index="120" value="P21A_2"/>
+                <StringItem index="121" value="P21B_1"/>
+                <StringItem index="122" value="P21B_2"/>
+                <StringItem index="123" value="P24A_1"/>
+                <StringItem index="124" value="P24A_2"/>
+                <StringItem index="125" value="P24B_1"/>
+                <StringItem index="126" value="P24B_2"/>
+                <StringItem index="127" value="P24C_1"/>
+                <StringItem index="128" value="P24C_2"/>
+                <StringItem index="129" value="P27C_1"/>
+                <StringItem index="130" value="P27C_2"/>
+                <StringItem index="131" value="P27D_1"/>
+                <StringItem index="132" value="P27D_2"/>
+                <StringItem index="133" value="P30A_1"/>
+                <StringItem index="134" value="P30A_2"/>
+                <StringItem index="135" value="P30B_1"/>
+                <StringItem index="136" value="P30B_2"/>
+                <StringItem index="137" value="P40A_1"/>
+                <StringItem index="138" value="P40A_2"/>
+                <StringItem index="139" value="P40B_1"/>
+                <StringItem index="140" value="P40B_2"/>
+                <StringItem index="141" value="P47A_1"/>
+                <StringItem index="142" value="P47A_2"/>
+                <StringItem index="143" value="P47B_1"/>
+                <StringItem index="144" value="P47B_2"/>
+                <StringItem index="145" value="P47C_1"/>
+                <StringItem index="146" value="P47C_2"/>
+                <StringItem index="147" value="P52A_1"/>
+                <StringItem index="148" value="P52A_2"/>
+                <StringItem index="149" value="P52C_1"/>
+                <StringItem index="150" value="P52C_2"/>
+                <StringItem index="151" value="P52D_1"/>
+                <StringItem index="152" value="P52D_2"/>
+                <StringItem index="153" value="P57_1"/>
+                <StringItem index="154" value="P57_2"/>
+                <StringItem index="155" value="P71_1"/>
+                <StringItem index="156" value="P71_2"/>
+                <StringItem index="157" value="P72_1"/>
+                <StringItem index="158" value="P72_2"/>
+                <StringItem index="159" value="T42_1"/>
+                <StringItem index="160" value="T42_2"/>
+                <StringItem index="161" value="T47A_2"/>
+                <StringItem index="162" value="A87"/>
+                <StringItem index="163" value="A11"/>
+                <StringItem index="164" value="A18"/>
+                <StringItem index="165" value="A34"/>
+                <StringItem index="166" value="A35"/>
+                <StringItem index="167" value="A78A_1"/>
+                <StringItem index="168" value="A84_1"/>
+                <StringItem index="169" value="A84_2"/>
+                <StringItem index="170" value="A12C"/>
+                <StringItem index="171" value="A44A_1"/>
+                <StringItem index="172" value="A44A_2"/>
+                <StringItem index="173" value="A45_1"/>
+                <StringItem index="174" value="A45_2"/>
+                <StringItem index="175" value="A51_1"/>
+                <StringItem index="176" value="A51_2"/>
+                <StringItem index="177" value="A54_1"/>
+                <StringItem index="178" value="A54_2"/>
+                <StringItem index="179" value="P20_1"/>
+                <StringItem index="180" value="P20_2"/>
+                <StringItem index="181" value="P27A_1"/>
+                <StringItem index="182" value="P27A_2"/>
+                <StringItem index="183" value="P32_1"/>
+                <StringItem index="184" value="P32_2"/>
+                <StringItem index="185" value="P41_1"/>
+                <StringItem index="186" value="P41_2"/>
+                <StringItem index="187" value="P53_1"/>
+                <StringItem index="188" value="P53_2"/>
+                <StringItem index="189" value="P70B_1"/>
+                <StringItem index="190" value="P70B_2"/>
+                <StringItem index="191" value="P74_1"/>
+                <StringItem index="192" value="P74_2"/>
+                <StringItem index="193" value="A14B"/>
+                <StringItem index="194" value="A17C"/>
+                <StringItem index="195" value="T50_1"/>
+                <StringItem index="196" value="T50_2"/>
+                <StringItem index="197" value="A14B_1"/>
+                <StringItem index="198" value="A14B_2"/>
+                <StringItem index="199" value="T47A_1"/>
+                <StringItem index="200" value="T40_2"/>
+                <StringItem index="201" value="A48"/>
+                <StringItem index="202" value="A54"/>
+                <StringItem index="203" value="P74A_1"/>
+                <StringItem index="204" value="P74B_2"/>
+                <StringItem index="205" value="A17C_1"/>
+                <StringItem index="206" value="A72B_1"/>
+                <StringItem index="207" value="A52_1"/>
+                <StringItem index="208" value="R54_1"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Seleccionar"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>

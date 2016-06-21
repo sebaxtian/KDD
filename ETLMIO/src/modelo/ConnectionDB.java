@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import controlador.ControllerGUI;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -67,6 +68,7 @@ public class ConnectionDB {
         connectionProps.put("password", pwd);
         // Carga y establece coneccion con base de datos
         System.out.println("Inicia carga de coneccion con base de datos " + dbms);
+        ControllerGUI.log("Inicia carga de coneccion con base de datos " + dbms);
         loadConnectionDB();
     }
     
@@ -85,13 +87,16 @@ public class ConnectionDB {
                 } else {
                     conndb = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + dbname, connectionProps);
                     System.out.println("Exito al carga coneccion con base de datos MySQL");
+                    ControllerGUI.log("Exito al carga coneccion con base de datos MySQL");
                 }
             } catch (SQLException ex) {
                 System.err.println("Error al cargar coneccion con base de datos MySQL " + ex.getMessage());
+                ControllerGUI.log("Error al cargar coneccion con base de datos MySQL " + ex.getMessage());
             }
         }
         if(dbms.equals(DBMSPOSTGRESQL)) {
             System.out.println("Cargar coneccion con base de datos Postgresql no implementada");
+            ControllerGUI.log("Cargar coneccion con base de datos Postgresql no implementada");
         }
     }
     
@@ -105,6 +110,7 @@ public class ConnectionDB {
                 this.conndb.close();
             } catch (SQLException ex) {
                 System.err.println("Error al cerrar coneccion con base de datos " + ex.getMessage());
+                ControllerGUI.log("Error al cerrar coneccion con base de datos " + ex.getMessage());
             }
         }
     }
