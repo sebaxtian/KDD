@@ -148,11 +148,16 @@ public class ETL {
                     // Itera por cada Hoja, Fila y Celda de un Libro Excel
                     for(Sheet hojaExcel : libroExcel ) {
                         
+                        /*
                         // Si no se han cargado las 20 horas
                         if(maxTiempo < 20) {
                             // Se extrae la dimension Tiempo
                             this.extraerDimTiempo(hojaExcel.getSheetName());
                         }
+                        */
+                        // Se extrae la dimension Tiempo
+                        this.extraerDimTiempo(hojaExcel.getSheetName());
+                        
                         
                         for(Row fila : hojaExcel) {
                             

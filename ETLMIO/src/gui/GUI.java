@@ -24,6 +24,8 @@ public class GUI extends javax.swing.JFrame {
         ControllerGUI.gui = this;
         
         ControllerGUI.loadSelectFecha();
+        
+        ControllerGUI.loadDescReporte();
     }
 
     /**
@@ -35,7 +37,7 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
+        groupReportes = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         panelFecha1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -50,7 +52,7 @@ public class GUI extends javax.swing.JFrame {
         selectFranjaHoraria1 = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        textAreaReporte = new javax.swing.JTextArea();
         jPanel4 = new javax.swing.JPanel();
         lblMensajeLog = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -62,10 +64,11 @@ public class GUI extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
-        jRadioButtonMenuItem2 = new javax.swing.JRadioButtonMenuItem();
-        jRadioButtonMenuItem3 = new javax.swing.JRadioButtonMenuItem();
-        jRadioButtonMenuItem4 = new javax.swing.JRadioButtonMenuItem();
+        radioReporte1 = new javax.swing.JRadioButtonMenuItem();
+        radioReporte2 = new javax.swing.JRadioButtonMenuItem();
+        radioReporte3 = new javax.swing.JRadioButtonMenuItem();
+        radioReporte4 = new javax.swing.JRadioButtonMenuItem();
+        radioReporte5 = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Reportes ETL MIO");
@@ -115,9 +118,10 @@ public class GUI extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reporte", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        textAreaReporte.setColumns(20);
+        textAreaReporte.setLineWrap(true);
+        textAreaReporte.setRows(5);
+        jScrollPane1.setViewportView(textAreaReporte);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -247,22 +251,51 @@ public class GUI extends javax.swing.JFrame {
 
         jMenu2.setText("Reporte");
 
-        buttonGroup1.add(jRadioButtonMenuItem1);
-        jRadioButtonMenuItem1.setSelected(true);
-        jRadioButtonMenuItem1.setText("Reporte 1");
-        jMenu2.add(jRadioButtonMenuItem1);
+        groupReportes.add(radioReporte1);
+        radioReporte1.setSelected(true);
+        radioReporte1.setText("Reporte 1");
+        radioReporte1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioReporte1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(radioReporte1);
 
-        buttonGroup1.add(jRadioButtonMenuItem2);
-        jRadioButtonMenuItem2.setText("Reporte 2");
-        jMenu2.add(jRadioButtonMenuItem2);
+        groupReportes.add(radioReporte2);
+        radioReporte2.setText("Reporte 2");
+        radioReporte2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioReporte2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(radioReporte2);
 
-        buttonGroup1.add(jRadioButtonMenuItem3);
-        jRadioButtonMenuItem3.setText("Reporte 3");
-        jMenu2.add(jRadioButtonMenuItem3);
+        groupReportes.add(radioReporte3);
+        radioReporte3.setText("Reporte 3");
+        radioReporte3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioReporte3ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(radioReporte3);
 
-        buttonGroup1.add(jRadioButtonMenuItem4);
-        jRadioButtonMenuItem4.setText("Reporte 4");
-        jMenu2.add(jRadioButtonMenuItem4);
+        groupReportes.add(radioReporte4);
+        radioReporte4.setText("Reporte 4");
+        radioReporte4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioReporte4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(radioReporte4);
+
+        groupReportes.add(radioReporte5);
+        radioReporte5.setText("Reporte 5");
+        radioReporte5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioReporte5ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(radioReporte5);
 
         jMenuBar1.add(jMenu2);
 
@@ -304,11 +337,36 @@ public class GUI extends javax.swing.JFrame {
 
     private void selectRutasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectRutasActionPerformed
         // TODO add your handling code here:
-        if(selectRutas.getSelectedIndex() == 0) {
+        if(selectRutas.getSelectedIndex() == 0 && !ControllerGUI.visibleGuiRutas) {
             System.out.println("Selector de Rutas");
             GuiSelectRutas.main(null);
         }
     }//GEN-LAST:event_selectRutasActionPerformed
+
+    private void radioReporte1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioReporte1ActionPerformed
+        // TODO add your handling code here:
+        ControllerGUI.loadDescReporte();
+    }//GEN-LAST:event_radioReporte1ActionPerformed
+
+    private void radioReporte5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioReporte5ActionPerformed
+        // TODO add your handling code here:
+        ControllerGUI.loadDescReporte();
+    }//GEN-LAST:event_radioReporte5ActionPerformed
+
+    private void radioReporte2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioReporte2ActionPerformed
+        // TODO add your handling code here:
+        ControllerGUI.loadDescReporte();
+    }//GEN-LAST:event_radioReporte2ActionPerformed
+
+    private void radioReporte3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioReporte3ActionPerformed
+        // TODO add your handling code here:
+        ControllerGUI.loadDescReporte();
+    }//GEN-LAST:event_radioReporte3ActionPerformed
+
+    private void radioReporte4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioReporte4ActionPerformed
+        // TODO add your handling code here:
+        ControllerGUI.loadDescReporte();
+    }//GEN-LAST:event_radioReporte4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -347,7 +405,7 @@ public class GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnConsultar;
-    private javax.swing.ButtonGroup buttonGroup1;
+    public javax.swing.ButtonGroup groupReportes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -363,19 +421,20 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem3;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JTextArea jTextArea1;
     public javax.swing.JLabel lblMensajeLog;
     public javax.swing.JMenuItem menuConectar;
     public javax.swing.JPanel panelFecha1;
     public javax.swing.JPanel panelFecha2;
+    public javax.swing.JRadioButtonMenuItem radioReporte1;
+    public javax.swing.JRadioButtonMenuItem radioReporte2;
+    public javax.swing.JRadioButtonMenuItem radioReporte3;
+    public javax.swing.JRadioButtonMenuItem radioReporte4;
+    public javax.swing.JRadioButtonMenuItem radioReporte5;
     public javax.swing.JComboBox<String> selectEstaciones;
     public javax.swing.JComboBox<String> selectFranjaHoraria1;
     public javax.swing.JComboBox<String> selectRutas;
+    public javax.swing.JTextArea textAreaReporte;
     // End of variables declaration//GEN-END:variables
 }

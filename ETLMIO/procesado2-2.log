@@ -1,0 +1,47 @@
+ant -f /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO -Dnb.internal.action.name=run run
+init:
+deps-jar:
+Created dir: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build
+Updating property file: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/built-jar.properties
+Created dir: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/classes
+Created dir: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/empty
+Created dir: /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/generated-sources/ap-source-output
+Compiling 8 source files to /home/sebaxtian/Workspace/Netbeans/KDD/ETLMIO/build/classes
+compile:
+run:
+Inicia Proceso ETL 06/21/2016 14:09:47
+Inicia carga de coneccion con base de datos mysql
+Exito al carga coneccion con base de datos MySQL
+Numero de Archivos Excel Para Procesar: 19
+Obtiene Archivo Excel: 141105.xlsx
+Abre Libro Excel: 141105.xlsx
+Numero de Archivos Excel por Procesar: 19
+Obtiene Archivo Excel: 150419.xlsx
+Abre Libro Excel: 150419.xlsx
+Numero de Archivos Excel por Procesar: 18
+Obtiene Archivo Excel: 140518.xlsx
+Abre Libro Excel: 140518.xlsx
+Numero de Archivos Excel por Procesar: 17
+Obtiene Archivo Excel: 150822.xlsx
+Abre Libro Excel: 150822.xlsx
+Numero de Archivos Excel por Procesar: 16
+Obtiene Archivo Excel: 150407.xlsx
+Abre Libro Excel: 150407.xlsx
+Numero de Archivos Excel por Procesar: 15
+Obtiene Archivo Excel: 140317.xlsx
+Abre Libro Excel: 140317.xlsx
+Numero de Archivos Excel por Procesar: 14
+Obtiene Archivo Excel: 140224.xlsx
+Abre Libro Excel: 140224.xlsx
+Numero de Archivos Excel por Procesar: 13
+Obtiene Archivo Excel: 140513.xlsx
+Abre Libro Excel: 140513.xlsx
+Numero de Archivos Excel por Procesar: 12
+Obtiene Archivo Excel: 140520.xlsx
+Abre Libro Excel: 140520.xlsx
+Numero de Archivos Excel por Procesar: 11
+Obtiene Archivo Excel: 150505.xlsx
+Abre Libro Excel: 150505.xlsx
+Numero de Archivos Excel por Procesar: 10
+Termina Proceso ETL 06/21/2016 14:49:43
+BUILD SUCCESSFUL (total time: 40 minutes 0 seconds)

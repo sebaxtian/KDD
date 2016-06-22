@@ -5,6 +5,8 @@
  */
 package gui;
 
+import controlador.ControllerGUI;
+
 /**
  *
  * @author sebaxtian
@@ -18,6 +20,8 @@ public class GuiSelectRutas extends javax.swing.JFrame {
         initComponents();
         
         setLocationRelativeTo(null);
+        
+        ControllerGUI.visibleGuiRutas = true;
     }
 
     /**
@@ -30,20 +34,25 @@ public class GuiSelectRutas extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
+        listRutas = new javax.swing.JList<>();
+        btnSeleccionar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Rutas");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        listRutas.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "A01A", "A02_1", "A02_2", "A03", "A04_1", "A04_2", "A05_1", "A05_2", "A06_1", "A06_2", "A07A_1", "A07A_2", "A07B", "A11_1", "A11_2", "A12A", "A12B_1", "A12B_2", "A12C_1", "A12C_2", "A12D_1", "A12D_2", "A13A", "A13B", "A13C", "A14A_1", "A14A_2", "A17A", "A17B_1", "A17B_2", "A18_1", "A18_2", "A19A_1", "A19A_2", "A19B_1", "A19B_2", "A21_1", "A21_2", "A22", "A23", "A24_1", "A24_2", "A31_1", "A31_2", "A32", "A33_1", "A33_2", "A34_1", "A34_2", "A35A", "A35B_1", "A35B_2", "A36_1", "A36_2", "A37A", "A37B_1", "A37B_2", "A41A_1", "A41A_2", "A41B_1", "A41B_2", "A42A_1", "A42A_2", "A42B_1", "A42B_2", "A44A", "A44B_1", "A44B_2", "A45A_1", "A45A_2", "A45B_1", "A45B_2", "A47_1", "A47_2", "A52", "A53_1", "A53_2", "A55_1", "A55_2", "A56_1", "A56_2", "A57_1", "A57_2", "A70", "A71_1", "A71_2", "A72A", "A72B", "A73_1", "A73_2", "A75_1", "A75_2", "A76", "A77", "A78A", "A84A_1", "A84A_2", "A85_1", "A85_2", "A86_1", "A86_2", "E27_1", "E27_2", "E27B_1", "E27B_2", "E52_1", "E52_2", "P10A_1", "P10A_2", "P10B_1", "P10B_2", "P10D_1", "P10D_2", "P12A_1", "P12A_2", "P14A_1", "P14A_2", "P17_1", "P17_2", "P21A_1", "P21A_2", "P21B_1", "P21B_2", "P24A_1", "P24A_2", "P24B_1", "P24B_2", "P24C_1", "P24C_2", "P27C_1", "P27C_2", "P27D_1", "P27D_2", "P30A_1", "P30A_2", "P30B_1", "P30B_2", "P40A_1", "P40A_2", "P40B_1", "P40B_2", "P47A_1", "P47A_2", "P47B_1", "P47B_2", "P47C_1", "P47C_2", "P52A_1", "P52A_2", "P52C_1", "P52C_2", "P52D_1", "P52D_2", "P57_1", "P57_2", "P71_1", "P71_2", "P72_1", "P72_2", "T42_1", "T42_2", "T47A_2", "A87", "A11", "A18", "A34", "A35", "A78A_1", "A84_1", "A84_2", "A12C", "A44A_1", "A44A_2", "A45_1", "A45_2", "A51_1", "A51_2", "A54_1", "A54_2", "P20_1", "P20_2", "P27A_1", "P27A_2", "P32_1", "P32_2", "P41_1", "P41_2", "P53_1", "P53_2", "P70B_1", "P70B_2", "P74_1", "P74_2", "A14B", "A17C", "T50_1", "T50_2", "A14B_1", "A14B_2", "T47A_1", "T40_2", "A48", "A54", "P74A_1", "P74B_2", "A17C_1", "A72B_1", "A52_1", "R54_1" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(listRutas);
 
-        jButton1.setText("Seleccionar");
+        btnSeleccionar.setText("Seleccionar");
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -53,7 +62,7 @@ public class GuiSelectRutas extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
+                    .addComponent(btnSeleccionar, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -62,12 +71,19 @@ public class GuiSelectRutas extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(btnSeleccionar)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        // TODO add your handling code here:
+        ControllerGUI.setSelectRutas(listRutas.getSelectedValuesList());
+        ControllerGUI.visibleGuiRutas = false;
+        dispose();
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -105,8 +121,8 @@ public class GuiSelectRutas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> listRutas;
     // End of variables declaration//GEN-END:variables
 }

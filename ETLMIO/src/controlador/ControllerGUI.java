@@ -30,6 +30,7 @@ public class ControllerGUI {
     private static int port;
     private static JDatePicker selectFecha1, selectFecha2;
     public static boolean visibleGuiEstaciones = false;
+    public static boolean visibleGuiRutas = false;
     public static GUI gui;
     
     
@@ -74,12 +75,51 @@ public class ControllerGUI {
         for (String estacion : estaciones) {
             gui.selectEstaciones.addItem(estacion);
         }
-        gui.selectEstaciones.setSelectedIndex(1);
+        gui.selectEstaciones.setSelectedIndex(0);
     }
     
     
+    
+    public static void setSelectRutas(List<String> rutas) {
+        gui.selectRutas.removeAllItems();
+        gui.selectRutas.addItem("Selecionar");
+        for (String ruta : rutas) {
+            gui.selectRutas.addItem(ruta);
+        }
+        gui.selectRutas.setSelectedIndex(0);
+    }
+    
+    
+    
+    public static void loadDescReporte() {
+        if(gui.radioReporte1.isSelected()) {
+            //log("Descripcion de Reporte1");
+            gui.textAreaReporte.setText("Cantidad de pasajeros movilizados por el sistema en franjas horarias y fechas específicas.");
+        }
+        if(gui.radioReporte2.isSelected()) {
+            //log("Descripcion de Reporte2");
+            gui.textAreaReporte.setText("Estaciones donde hay más demanda de pasajeros.");
+        }
+        if(gui.radioReporte3.isSelected()) {
+            //log("Descripcion de Reporte3");
+            gui.textAreaReporte.setText("Rutas que más pasajeros mueven.");
+        }
+        if(gui.radioReporte4.isSelected()) {
+            //log("Descripcion de Reporte4");
+            gui.textAreaReporte.setText("Franjas horarias donde más hay movimiento de pasajeros.");
+        }
+        if(gui.radioReporte5.isSelected()) {
+            //log("Descripcion de Reporte5");
+            gui.textAreaReporte.setText("Comparación de la demanda en días laborables, fines de semana y días festivos.");
+        }
+    }
+    
+    
+    
     public static void log(String mensaje) {
-        gui.lblMensajeLog.setText(" Log: " + mensaje);
+        if(gui != null) {
+            gui.lblMensajeLog.setText(" Log: " + mensaje);
+        }
     }
     
 }
