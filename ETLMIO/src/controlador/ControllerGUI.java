@@ -38,7 +38,7 @@ public class ControllerGUI {
     private static String pwd;
     private static int port;
     private static JDatePicker selectFecha1, selectFecha2;
-    private static JFreeChart graficaReporte1;
+    private static JFreeChart graficaReporte1, graficaReporte2;
     private static List<String> listEstaciones;
     private static List<String> listRutas;
     public static boolean visibleGuiEstaciones = false;
@@ -313,7 +313,7 @@ public class ControllerGUI {
             graficarConsultaReporte1();
         }
         if(gui.radioReporte2.isSelected()) {
-            
+            graficarConsultaReporte2();
         }
         if(gui.radioReporte3.isSelected()) {
             
@@ -359,6 +359,42 @@ public class ControllerGUI {
             
         } catch (SQLException ex) {
             log("Error al crear DataSet para la grafica de Reporte1");
+        }
+    }
+    
+    
+    
+    
+    private static void graficarConsultaReporte2() {
+        // Obtiene los parametros de consulta
+        String[] rangoFecha = loadRangoFecha();
+        String franjaHoraria = loadFranjaHoraria();
+        String[] estaciones = loadEstaciones();
+        String[] rutas = loadRutas();
+        // Realizar Consulta
+        ResultSet resultSet = connectionDB.selectReporte2(rangoFecha, franjaHoraria, estaciones, rutas);
+        
+        // Crea una grafica de barras
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        
+        try {
+            
+            while(resultSet.next()) {
+                dataset.setValue(Integer.parseInt(resultSet.getString("total_pasajeros")), resultSet.getString("nombre_ruta_estacion"), resultSet.getString("total_pasajeros"));
+            }
+            
+            graficaReporte2 = ChartFactory.createBarChart("Reporte2",
+                    "Ruta-Estacion", "Cantidad Pasajeros", dataset, PlotOrientation.VERTICAL,
+                    true, true, false);
+            
+            ChartPanel gPanel = new ChartPanel(graficaReporte2);
+            gui.panelGraficas.removeAll();
+            gui.panelGraficas.add(gPanel);
+            gui.panelGraficas.updateUI();
+            gui.pack();
+            
+        } catch (SQLException ex) {
+            log("Error al crear DataSet para la grafica de Reporte2");
         }
     }
     
