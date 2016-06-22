@@ -9,6 +9,6 @@ SELECT cant_pasajeros, dim_fecha.fecha_bruta, dim_tiempo.tiempo_bruto, dim_ruta_
 	WHERE
 		(dim_fecha.fecha_bruta >= '140114' AND dim_fecha.fecha_bruta <= '140128')
 		AND
-		(dim_tiempo.tiempo_bruto >= '13-14' AND dim_tiempo.tiempo_bruto <= '14-15')
+		(dim_tiempo.tiempo_bruto = '4-5')
 		AND
 		(dim_ruta_estacion.nombre_ruta_estacion = '7 AGOSTO' OR dim_ruta_estacion.nombre_ruta_estacion = 'A.SANIN')

@@ -49,7 +49,7 @@ public class GUI extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         selectEstaciones = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        selectFranjaHoraria1 = new javax.swing.JComboBox<>();
+        selectFranjaHoraria = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         textAreaReporte = new javax.swing.JTextArea();
@@ -109,10 +109,10 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel3.setText("Franja Horaria:");
 
-        selectFranjaHoraria1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ninguna", "04:00 - 23:59", "04:00 - 04:59", "05:00 - 05:59", "06:00 - 06:59", "07:00 - 07:59", "08:00 - 08:59", "09:00 - 09:59", "10:00 - 10:59", "11:00 - 11:59", "12:00 - 12:59", "13:00 - 13:59", "14:00 - 14:59", "15:00 - 15:59", "16:00 - 16:59", "17:00 - 17:59", "18:00 - 18:59", "19:00 - 19:59", "20:00 - 20:59", "21:00 - 21:59", "22:00 - 22:59", "23:00 - 23:59" }));
-        selectFranjaHoraria1.addActionListener(new java.awt.event.ActionListener() {
+        selectFranjaHoraria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ninguna", "04:00 - 23:59", "04:00 - 04:59", "05:00 - 05:59", "06:00 - 06:59", "07:00 - 07:59", "08:00 - 08:59", "09:00 - 09:59", "10:00 - 10:59", "11:00 - 11:59", "12:00 - 12:59", "13:00 - 13:59", "14:00 - 14:59", "15:00 - 15:59", "16:00 - 16:59", "17:00 - 17:59", "18:00 - 18:59", "19:00 - 19:59", "20:00 - 20:59", "21:00 - 21:59", "22:00 - 22:59", "23:00 - 23:59" }));
+        selectFranjaHoraria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectFranjaHoraria1ActionPerformed(evt);
+                selectFranjaHorariaActionPerformed(evt);
             }
         });
 
@@ -155,7 +155,7 @@ public class GUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(selectEstaciones, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(selectFranjaHoraria1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(selectFranjaHoraria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(selectRutas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,7 +175,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(selectFranjaHoraria1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(selectFranjaHoraria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -306,6 +306,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         // TODO add your handling code here:
+        ControllerGUI.realizarConsulta();
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -323,9 +324,9 @@ public class GUI extends javax.swing.JFrame {
         ControllerGUI.conectarDB();
     }//GEN-LAST:event_menuConectarActionPerformed
 
-    private void selectFranjaHoraria1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectFranjaHoraria1ActionPerformed
+    private void selectFranjaHorariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectFranjaHorariaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_selectFranjaHoraria1ActionPerformed
+    }//GEN-LAST:event_selectFranjaHorariaActionPerformed
 
     private void selectEstacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectEstacionesActionPerformed
         // TODO add your handling code here:
@@ -433,7 +434,7 @@ public class GUI extends javax.swing.JFrame {
     public javax.swing.JRadioButtonMenuItem radioReporte4;
     public javax.swing.JRadioButtonMenuItem radioReporte5;
     public javax.swing.JComboBox<String> selectEstaciones;
-    public javax.swing.JComboBox<String> selectFranjaHoraria1;
+    public javax.swing.JComboBox<String> selectFranjaHoraria;
     public javax.swing.JComboBox<String> selectRutas;
     public javax.swing.JTextArea textAreaReporte;
     // End of variables declaration//GEN-END:variables
