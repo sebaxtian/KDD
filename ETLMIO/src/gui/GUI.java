@@ -55,7 +55,7 @@ public class GUI extends javax.swing.JFrame {
         textAreaReporte = new javax.swing.JTextArea();
         jPanel4 = new javax.swing.JPanel();
         lblMensajeLog = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
+        panelGraficas = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuConectar = new javax.swing.JMenuItem();
@@ -200,20 +200,9 @@ public class GUI extends javax.swing.JFrame {
 
         getContentPane().add(jPanel4, java.awt.BorderLayout.SOUTH);
 
-        jPanel3.setBackground(new java.awt.Color(254, 254, 254));
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 585, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 479, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
+        panelGraficas.setBackground(new java.awt.Color(254, 254, 254));
+        panelGraficas.setPreferredSize(new java.awt.Dimension(600, 479));
+        getContentPane().add(panelGraficas, java.awt.BorderLayout.CENTER);
 
         jMenu1.setText("Archivo");
 
@@ -420,7 +409,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -428,6 +416,7 @@ public class GUI extends javax.swing.JFrame {
     public javax.swing.JMenuItem menuConectar;
     public javax.swing.JPanel panelFecha1;
     public javax.swing.JPanel panelFecha2;
+    public javax.swing.JPanel panelGraficas;
     public javax.swing.JRadioButtonMenuItem radioReporte1;
     public javax.swing.JRadioButtonMenuItem radioReporte2;
     public javax.swing.JRadioButtonMenuItem radioReporte3;

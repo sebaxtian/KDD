@@ -6,11 +6,20 @@
 package controlador;
 
 import gui.GUI;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import modelo.ConnectionDB;
 import org.jdatepicker.JDateComponentFactory;
 import org.jdatepicker.JDatePicker;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
@@ -29,6 +38,9 @@ public class ControllerGUI {
     private static String pwd;
     private static int port;
     private static JDatePicker selectFecha1, selectFecha2;
+    private static JFreeChart graficaReporte1;
+    private static List<String> listEstaciones;
+    private static List<String> listRutas;
     public static boolean visibleGuiEstaciones = false;
     public static boolean visibleGuiRutas = false;
     public static GUI gui;
@@ -72,10 +84,12 @@ public class ControllerGUI {
     public static void setSelectEstaciones(List<String> estaciones) {
         gui.selectEstaciones.removeAllItems();
         gui.selectEstaciones.addItem("Selecionar");
+        gui.selectEstaciones.addItem("Todas");
         for (String estacion : estaciones) {
             gui.selectEstaciones.addItem(estacion);
         }
-        gui.selectEstaciones.setSelectedIndex(0);
+        gui.selectEstaciones.setSelectedIndex(1);
+        listEstaciones = estaciones;
     }
     
     
@@ -83,10 +97,12 @@ public class ControllerGUI {
     public static void setSelectRutas(List<String> rutas) {
         gui.selectRutas.removeAllItems();
         gui.selectRutas.addItem("Selecionar");
+        gui.selectRutas.addItem("Todas");
         for (String ruta : rutas) {
             gui.selectRutas.addItem(ruta);
         }
-        gui.selectRutas.setSelectedIndex(0);
+        gui.selectRutas.setSelectedIndex(1);
+        listRutas = rutas;
     }
     
     
@@ -251,9 +267,50 @@ public class ControllerGUI {
     
     
     
+    
+    private static String[] loadEstaciones() {
+        String[] estaciones = {};
+        
+        if(gui.selectEstaciones.getSelectedIndex() == 1) {
+            estaciones = new String[gui.selectEstaciones.getItemCount()-2];
+            int i = 0;
+            for (String estacion : listEstaciones) {
+                estaciones[i] = estacion;
+                i++;
+            }
+        } else if(gui.selectEstaciones.getSelectedIndex() != 0) {
+            estaciones = new String[1];
+            estaciones[0] = listEstaciones.get(gui.selectEstaciones.getSelectedIndex()-2);
+        }
+        
+        return estaciones;
+    }
+    
+    
+    
+    private static String[] loadRutas() {
+        String[] rutas = {};
+        
+        if(gui.selectRutas.getSelectedIndex() == 1) {
+            rutas = new String[gui.selectRutas.getItemCount()-2];
+            int i = 0;
+            for (String ruta : listRutas) {
+                rutas[i] = ruta;
+                i++;
+            }
+        } else if(gui.selectRutas.getSelectedIndex() != 0) {
+            rutas = new String[1];
+            rutas[0] = listRutas.get(gui.selectRutas.getSelectedIndex()-2);
+        }
+        
+        return rutas;
+    }
+    
+    
+    
     public static void realizarConsulta() {
         if(gui.radioReporte1.isSelected()) {
-            
+            graficarConsultaReporte1();
         }
         if(gui.radioReporte2.isSelected()) {
             
@@ -268,6 +325,43 @@ public class ControllerGUI {
             
         }
     }
+    
+    
+    
+    
+    private static void graficarConsultaReporte1() {
+        // Obtiene los parametros de consulta
+        String[] rangoFecha = loadRangoFecha();
+        String franjaHoraria = loadFranjaHoraria();
+        String[] estaciones = loadEstaciones();
+        String[] rutas = loadRutas();
+        // Realizar Consulta
+        ResultSet resultSet = connectionDB.selectReporte1(rangoFecha, franjaHoraria, estaciones, rutas);
+        
+        // Crea una grafica de barras
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        
+        try {
+            
+            while(resultSet.next()) {
+                dataset.setValue(Integer.parseInt(resultSet.getString("cant_pasajeros")), resultSet.getString("nombre_ruta_estacion"), resultSet.getString("fecha_bruta"));
+            }
+            
+            graficaReporte1 = ChartFactory.createBarChart("Reporte1",
+                    "Fecha", "Cantidad Pasajeros", dataset, PlotOrientation.VERTICAL,
+                    true, true, false);
+            
+            ChartPanel gPanel = new ChartPanel(graficaReporte1);
+            gui.panelGraficas.removeAll();
+            gui.panelGraficas.add(gPanel);
+            gui.panelGraficas.updateUI();
+            gui.pack();
+            
+        } catch (SQLException ex) {
+            log("Error al crear DataSet para la grafica de Reporte1");
+        }
+    }
+    
     
     
     
