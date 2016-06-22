@@ -38,7 +38,7 @@ public class ControllerGUI {
     private static String pwd;
     private static int port;
     private static JDatePicker selectFecha1, selectFecha2;
-    private static JFreeChart graficaReporte1, graficaReporte2;
+    private static JFreeChart graficaReporte1, graficaReporte2, graficaReporte3;
     private static List<String> listEstaciones;
     private static List<String> listRutas;
     public static boolean visibleGuiEstaciones = false;
@@ -111,22 +111,32 @@ public class ControllerGUI {
         if(gui.radioReporte1.isSelected()) {
             //log("Descripcion de Reporte1");
             gui.textAreaReporte.setText("Cantidad de pasajeros movilizados por el sistema en franjas horarias y fechas específicas.");
+            gui.selectEstaciones.setEnabled(true);
+            gui.selectRutas.setEnabled(true);
         }
         if(gui.radioReporte2.isSelected()) {
             //log("Descripcion de Reporte2");
             gui.textAreaReporte.setText("Estaciones donde hay más demanda de pasajeros.");
+            gui.selectEstaciones.setEnabled(true);
+            gui.selectRutas.setEnabled(false);
         }
         if(gui.radioReporte3.isSelected()) {
             //log("Descripcion de Reporte3");
             gui.textAreaReporte.setText("Rutas que más pasajeros mueven.");
+            gui.selectEstaciones.setEnabled(false);
+            gui.selectRutas.setEnabled(true);
         }
         if(gui.radioReporte4.isSelected()) {
             //log("Descripcion de Reporte4");
             gui.textAreaReporte.setText("Franjas horarias donde más hay movimiento de pasajeros.");
+            gui.selectEstaciones.setEnabled(true);
+            gui.selectRutas.setEnabled(true);
         }
         if(gui.radioReporte5.isSelected()) {
             //log("Descripcion de Reporte5");
             gui.textAreaReporte.setText("Comparación de la demanda en días laborables, fines de semana y días festivos.");
+            gui.selectEstaciones.setEnabled(true);
+            gui.selectRutas.setEnabled(true);
         }
     }
     
@@ -316,7 +326,7 @@ public class ControllerGUI {
             graficarConsultaReporte2();
         }
         if(gui.radioReporte3.isSelected()) {
-            
+            graficarConsultaReporte3();
         }
         if(gui.radioReporte4.isSelected()) {
             
@@ -370,9 +380,8 @@ public class ControllerGUI {
         String[] rangoFecha = loadRangoFecha();
         String franjaHoraria = loadFranjaHoraria();
         String[] estaciones = loadEstaciones();
-        String[] rutas = loadRutas();
         // Realizar Consulta
-        ResultSet resultSet = connectionDB.selectReporte2(rangoFecha, franjaHoraria, estaciones, rutas);
+        ResultSet resultSet = connectionDB.selectReporte2(rangoFecha, franjaHoraria, estaciones);
         
         // Crea una grafica de barras
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -384,7 +393,7 @@ public class ControllerGUI {
             }
             
             graficaReporte2 = ChartFactory.createBarChart("Reporte2",
-                    "Ruta-Estacion", "Cantidad Pasajeros", dataset, PlotOrientation.VERTICAL,
+                    "Estaciones", "Cantidad Pasajeros", dataset, PlotOrientation.VERTICAL,
                     true, true, false);
             
             ChartPanel gPanel = new ChartPanel(graficaReporte2);
@@ -395,6 +404,41 @@ public class ControllerGUI {
             
         } catch (SQLException ex) {
             log("Error al crear DataSet para la grafica de Reporte2");
+        }
+    }
+    
+    
+    
+    
+    private static void graficarConsultaReporte3() {
+        // Obtiene los parametros de consulta
+        String[] rangoFecha = loadRangoFecha();
+        String franjaHoraria = loadFranjaHoraria();
+        String[] rutas = loadRutas();
+        // Realizar Consulta
+        ResultSet resultSet = connectionDB.selectReporte3(rangoFecha, franjaHoraria, rutas);
+        
+        // Crea una grafica de barras
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        
+        try {
+            
+            while(resultSet.next()) {
+                dataset.setValue(Integer.parseInt(resultSet.getString("total_pasajeros")), resultSet.getString("nombre_ruta_estacion"), resultSet.getString("total_pasajeros"));
+            }
+            
+            graficaReporte3 = ChartFactory.createBarChart("Reporte3",
+                    "Rutas", "Cantidad Pasajeros", dataset, PlotOrientation.VERTICAL,
+                    true, true, false);
+            
+            ChartPanel gPanel = new ChartPanel(graficaReporte3);
+            gui.panelGraficas.removeAll();
+            gui.panelGraficas.add(gPanel);
+            gui.panelGraficas.updateUI();
+            gui.pack();
+            
+        } catch (SQLException ex) {
+            log("Error al crear DataSet para la grafica de Reporte3");
         }
     }
     
