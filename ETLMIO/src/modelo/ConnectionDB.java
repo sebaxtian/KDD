@@ -486,4 +486,228 @@ public class ConnectionDB {
     
     
     
+    
+    public ResultSet selectReporte4(String[] rangoFecha, String[] estaciones, String[] rutas) {
+        ResultSet resultSet = null;
+        String strSelect = "";
+        try {
+            loadConnectionDB();
+            String condicionRutaEstacion = "";
+            for (int i = 0; i < estaciones.length; i++) {
+                if(i < (estaciones.length - 1)) {
+                    condicionRutaEstacion += "dim_ruta_estacion.nombre_ruta_estacion = '" + estaciones[i] + "' OR ";
+                } else {
+                    condicionRutaEstacion += "dim_ruta_estacion.nombre_ruta_estacion = '" + estaciones[i] + "'";
+                }
+            }
+            for (int i = 0; i < rutas.length; i++) {
+                condicionRutaEstacion += "OR dim_ruta_estacion.nombre_ruta_estacion = '" + rutas[i] + "'";
+            }
+            strSelect = "SELECT SUM(cant_pasajeros) as total_pasajeros, dim_tiempo.tiempo_bruto, dim_ruta_estacion.nombre_ruta_estacion "
+                    + "FROM frecuencias "
+                    + "INNER JOIN dim_fecha "
+                    + "ON frecuencias.fk_fecha = dim_fecha.id_fecha "
+                    + "INNER JOIN dim_tiempo "
+                    + "ON frecuencias.fk_tiempo = dim_tiempo.id_tiempo "
+                    + "INNER JOIN dim_ruta_estacion "
+                    + "ON frecuencias.fk_ruta_estacion = dim_ruta_estacion.id_ruta_estacion "
+                    + "WHERE "
+                    + "(dim_fecha.fecha_bruta >= '" + rangoFecha[0] + "' AND dim_fecha.fecha_bruta <= '" + rangoFecha[1] + "') "
+                    + "AND "
+                    + "(" + condicionRutaEstacion + ") "
+                    + "GROUP BY dim_tiempo.tiempo_bruto, dim_ruta_estacion.nombre_ruta_estacion "
+                    + "ORDER BY total_pasajeros DESC;";
+            System.out.println("String SQL: " + strSelect);
+            Statement statement = this.conndb.createStatement();
+            resultSet = statement.executeQuery(strSelect);
+            ControllerGUI.log("Exito al ejecutar String SQL en Select Reporte4");
+        } catch (SQLException ex) {
+            ControllerGUI.log("Error al ejecutar String SQL: " + strSelect + " " + ex.getMessage());
+        }
+        
+        return resultSet;
+    }
+    
+    
+    
+    public ResultSet selectReporte5_1(String[] rangoFecha, String franjaHoraria, String[] estaciones, String[] rutas) {
+        ResultSet resultSet = null;
+        String strSelect = "";
+        try {
+            loadConnectionDB();
+            String condicionRutaEstacion = "";
+            for (int i = 0; i < estaciones.length; i++) {
+                if(i < (estaciones.length - 1)) {
+                    condicionRutaEstacion += "dim_ruta_estacion.nombre_ruta_estacion = '" + estaciones[i] + "' OR ";
+                } else {
+                    condicionRutaEstacion += "dim_ruta_estacion.nombre_ruta_estacion = '" + estaciones[i] + "'";
+                }
+            }
+            for (int i = 0; i < rutas.length; i++) {
+                condicionRutaEstacion += "OR dim_ruta_estacion.nombre_ruta_estacion = '" + rutas[i] + "'";
+            }
+            strSelect = "SELECT cant_pasajeros, dim_fecha.fecha_bruta, dim_fecha.nombre_dia, dim_ruta_estacion.nombre_ruta_estacion "
+                    + "FROM frecuencias "
+                    + "INNER JOIN dim_fecha "
+                    + "ON frecuencias.fk_fecha = dim_fecha.id_fecha "
+                    + "INNER JOIN dim_tiempo "
+                    + "ON frecuencias.fk_tiempo = dim_tiempo.id_tiempo "
+                    + "INNER JOIN dim_ruta_estacion "
+                    + "ON frecuencias.fk_ruta_estacion = dim_ruta_estacion.id_ruta_estacion "
+                    + "WHERE "
+                    + "(dim_fecha.fecha_bruta >= '" + rangoFecha[0] + "' AND dim_fecha.fecha_bruta <= '" + rangoFecha[1] + "') "
+                    + "AND "
+                    + "(dim_fecha.nombre_dia != 'sábado' AND dim_fecha.nombre_dia != 'domingo' AND dim_fecha.es_festivo = false) "
+                    + "AND "
+                    + "(dim_tiempo.tiempo_bruto = '" + franjaHoraria + "') "
+                    + "AND "
+                    + "(" + condicionRutaEstacion + ");";
+            System.out.println("String SQL: " + strSelect);
+            Statement statement = this.conndb.createStatement();
+            resultSet = statement.executeQuery(strSelect);
+            ControllerGUI.log("Exito al ejecutar String SQL en Select Reporte5_1");
+        } catch (SQLException ex) {
+            ControllerGUI.log("Error al ejecutar String SQL: " + strSelect + " " + ex.getMessage());
+        }
+        
+        return resultSet;
+    }
+    
+    
+    
+    
+    public ResultSet selectReporte5_2(String[] rangoFecha, String franjaHoraria, String[] estaciones, String[] rutas) {
+        ResultSet resultSet = null;
+        String strSelect = "";
+        try {
+            loadConnectionDB();
+            String condicionRutaEstacion = "";
+            for (int i = 0; i < estaciones.length; i++) {
+                if(i < (estaciones.length - 1)) {
+                    condicionRutaEstacion += "dim_ruta_estacion.nombre_ruta_estacion = '" + estaciones[i] + "' OR ";
+                } else {
+                    condicionRutaEstacion += "dim_ruta_estacion.nombre_ruta_estacion = '" + estaciones[i] + "'";
+                }
+            }
+            for (int i = 0; i < rutas.length; i++) {
+                condicionRutaEstacion += "OR dim_ruta_estacion.nombre_ruta_estacion = '" + rutas[i] + "'";
+            }
+            strSelect = "SELECT cant_pasajeros, dim_fecha.fecha_bruta, dim_fecha.nombre_dia, dim_ruta_estacion.nombre_ruta_estacion "
+                    + "FROM frecuencias "
+                    + "INNER JOIN dim_fecha "
+                    + "ON frecuencias.fk_fecha = dim_fecha.id_fecha "
+                    + "INNER JOIN dim_tiempo "
+                    + "ON frecuencias.fk_tiempo = dim_tiempo.id_tiempo "
+                    + "INNER JOIN dim_ruta_estacion "
+                    + "ON frecuencias.fk_ruta_estacion = dim_ruta_estacion.id_ruta_estacion "
+                    + "WHERE "
+                    + "(dim_fecha.fecha_bruta >= '" + rangoFecha[0] + "' AND dim_fecha.fecha_bruta <= '" + rangoFecha[1] + "') "
+                    + "AND "
+                    + "(dim_fecha.nombre_dia = 'sábado' OR dim_fecha.nombre_dia = 'domingo') "
+                    + "AND "
+                    + "(dim_tiempo.tiempo_bruto = '" + franjaHoraria + "') "
+                    + "AND "
+                    + "(" + condicionRutaEstacion + ");";
+            System.out.println("String SQL: " + strSelect);
+            Statement statement = this.conndb.createStatement();
+            resultSet = statement.executeQuery(strSelect);
+            ControllerGUI.log("Exito al ejecutar String SQL en Select Reporte5_2");
+        } catch (SQLException ex) {
+            ControllerGUI.log("Error al ejecutar String SQL: " + strSelect + " " + ex.getMessage());
+        }
+        
+        return resultSet;
+    }    
+    
+    
+    
+    public ResultSet selectReporte5_3(String[] rangoFecha, String franjaHoraria, String[] estaciones, String[] rutas) {
+        ResultSet resultSet = null;
+        String strSelect = "";
+        try {
+            loadConnectionDB();
+            String condicionRutaEstacion = "";
+            for (int i = 0; i < estaciones.length; i++) {
+                if(i < (estaciones.length - 1)) {
+                    condicionRutaEstacion += "dim_ruta_estacion.nombre_ruta_estacion = '" + estaciones[i] + "' OR ";
+                } else {
+                    condicionRutaEstacion += "dim_ruta_estacion.nombre_ruta_estacion = '" + estaciones[i] + "'";
+                }
+            }
+            for (int i = 0; i < rutas.length; i++) {
+                condicionRutaEstacion += "OR dim_ruta_estacion.nombre_ruta_estacion = '" + rutas[i] + "'";
+            }
+            strSelect = "SELECT cant_pasajeros, dim_fecha.fecha_bruta, dim_fecha.nombre_dia, dim_ruta_estacion.nombre_ruta_estacion "
+                    + "FROM frecuencias "
+                    + "INNER JOIN dim_fecha "
+                    + "ON frecuencias.fk_fecha = dim_fecha.id_fecha "
+                    + "INNER JOIN dim_tiempo "
+                    + "ON frecuencias.fk_tiempo = dim_tiempo.id_tiempo "
+                    + "INNER JOIN dim_ruta_estacion "
+                    + "ON frecuencias.fk_ruta_estacion = dim_ruta_estacion.id_ruta_estacion "
+                    + "WHERE "
+                    + "(dim_fecha.fecha_bruta >= '" + rangoFecha[0] + "' AND dim_fecha.fecha_bruta <= '" + rangoFecha[1] + "') "
+                    + "AND "
+                    + "(dim_fecha.es_festivo = true) "
+                    + "AND "
+                    + "(dim_tiempo.tiempo_bruto = '" + franjaHoraria + "') "
+                    + "AND "
+                    + "(" + condicionRutaEstacion + ");";
+            System.out.println("String SQL: " + strSelect);
+            Statement statement = this.conndb.createStatement();
+            resultSet = statement.executeQuery(strSelect);
+            ControllerGUI.log("Exito al ejecutar String SQL en Select Reporte5_3");
+        } catch (SQLException ex) {
+            ControllerGUI.log("Error al ejecutar String SQL: " + strSelect + " " + ex.getMessage());
+        }
+        
+        return resultSet;
+    }
+    
+    
+    
+    public ResultSet selectReporte5_4(String[] rangoFecha, String franjaHoraria, String[] estaciones, String[] rutas) {
+        ResultSet resultSet = null;
+        String strSelect = "";
+        try {
+            loadConnectionDB();
+            String condicionRutaEstacion = "";
+            for (int i = 0; i < estaciones.length; i++) {
+                if(i < (estaciones.length - 1)) {
+                    condicionRutaEstacion += "dim_ruta_estacion.nombre_ruta_estacion = '" + estaciones[i] + "' OR ";
+                } else {
+                    condicionRutaEstacion += "dim_ruta_estacion.nombre_ruta_estacion = '" + estaciones[i] + "'";
+                }
+            }
+            for (int i = 0; i < rutas.length; i++) {
+                condicionRutaEstacion += "OR dim_ruta_estacion.nombre_ruta_estacion = '" + rutas[i] + "'";
+            }
+            strSelect = "SELECT cant_pasajeros, dim_fecha.fecha_bruta, dim_fecha.nombre_dia, dim_ruta_estacion.nombre_ruta_estacion "
+                    + "FROM frecuencias "
+                    + "INNER JOIN dim_fecha "
+                    + "ON frecuencias.fk_fecha = dim_fecha.id_fecha "
+                    + "INNER JOIN dim_tiempo "
+                    + "ON frecuencias.fk_tiempo = dim_tiempo.id_tiempo "
+                    + "INNER JOIN dim_ruta_estacion "
+                    + "ON frecuencias.fk_ruta_estacion = dim_ruta_estacion.id_ruta_estacion "
+                    + "WHERE "
+                    + "(dim_fecha.fecha_bruta >= '" + rangoFecha[0] + "' AND dim_fecha.fecha_bruta <= '" + rangoFecha[1] + "') "
+                    + "AND "
+                    + "(dim_fecha.es_feriado = true) "
+                    + "AND "
+                    + "(dim_tiempo.tiempo_bruto = '" + franjaHoraria + "') "
+                    + "AND "
+                    + "(" + condicionRutaEstacion + ");";
+            System.out.println("String SQL: " + strSelect);
+            Statement statement = this.conndb.createStatement();
+            resultSet = statement.executeQuery(strSelect);
+            ControllerGUI.log("Exito al ejecutar String SQL en Select Reporte5_4");
+        } catch (SQLException ex) {
+            ControllerGUI.log("Error al ejecutar String SQL: " + strSelect + " " + ex.getMessage());
+        }
+        
+        return resultSet;
+    }
+    
+    
 }

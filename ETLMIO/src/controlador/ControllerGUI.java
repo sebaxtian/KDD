@@ -6,17 +6,22 @@
 package controlador;
 
 import gui.GUI;
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.ConnectionDB;
 import org.jdatepicker.JDateComponentFactory;
 import org.jdatepicker.JDatePicker;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -38,7 +43,7 @@ public class ControllerGUI {
     private static String pwd;
     private static int port;
     private static JDatePicker selectFecha1, selectFecha2;
-    private static JFreeChart graficaReporte1, graficaReporte2, graficaReporte3;
+    private static JFreeChart graficaReporte1, graficaReporte2, graficaReporte3, graficaReporte4, graficaReporte5;
     private static List<String> listEstaciones;
     private static List<String> listRutas;
     public static boolean visibleGuiEstaciones = false;
@@ -329,10 +334,10 @@ public class ControllerGUI {
             graficarConsultaReporte3();
         }
         if(gui.radioReporte4.isSelected()) {
-            
+            graficarConsultaReporte4();
         }
         if(gui.radioReporte5.isSelected()) {
-            
+           graficarConsultaReporte5();
         }
     }
     
@@ -439,6 +444,139 @@ public class ControllerGUI {
             
         } catch (SQLException ex) {
             log("Error al crear DataSet para la grafica de Reporte3");
+        }
+    }
+    
+    
+    
+    
+    private static void graficarConsultaReporte4() {
+        // Obtiene los parametros de consulta
+        String[] rangoFecha = loadRangoFecha();
+        String[] estaciones = loadEstaciones();
+        String[] rutas = loadRutas();
+        // Realizar Consulta
+        ResultSet resultSet = connectionDB.selectReporte4(rangoFecha, estaciones, rutas);
+        
+        // Crea una grafica de barras
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        
+        try {
+            
+            while(resultSet.next()) {
+                dataset.setValue(Integer.parseInt(resultSet.getString("total_pasajeros")), resultSet.getString("nombre_ruta_estacion"), resultSet.getString("tiempo_bruto"));
+            }
+            
+            graficaReporte4 = ChartFactory.createBarChart("Reporte4",
+                    "Franja Horaria", "Cantidad Pasajeros", dataset, PlotOrientation.VERTICAL,
+                    true, true, false);
+            
+            
+            
+            ChartPanel gPanel = new ChartPanel(graficaReporte4);
+            
+            gui.panelGraficas.removeAll();
+            gui.panelGraficas.add(gPanel);
+            gui.panelGraficas.updateUI();
+            gui.pack();
+            
+        } catch (SQLException ex) {
+            log("Error al crear DataSet para la grafica de Reporte4");
+        }
+    }
+    
+    
+    
+    
+    private static void graficarConsultaReporte5() {
+        // Obtiene los parametros de consulta
+        String[] rangoFecha = loadRangoFecha();
+        String franjaHoraria = loadFranjaHoraria();
+        String[] estaciones = loadEstaciones();
+        String[] rutas = loadRutas();
+        // Realizar Consulta , Dias Laborales
+        ResultSet diasLaborales = connectionDB.selectReporte5_1(rangoFecha, franjaHoraria, estaciones, rutas);
+        // Realizar Consulta , Fin de Semana
+        ResultSet finSemana = connectionDB.selectReporte5_2(rangoFecha, franjaHoraria, estaciones, rutas);
+        // Realizar Consulta , Dias Festivos
+        ResultSet diasFestivos = connectionDB.selectReporte5_3(rangoFecha, franjaHoraria, estaciones, rutas);
+        // Realizar Consulta , Dias Feriados
+        ResultSet diasFeriados = connectionDB.selectReporte5_4(rangoFecha, franjaHoraria, estaciones, rutas);
+        
+        // Crea una grafica de barras
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        
+        try {
+            
+            
+            // Dias Laborales
+            while(diasLaborales.next()) {
+                dataset.setValue(Integer.parseInt(diasLaborales.getString("cant_pasajeros")), "Dia Laboral", diasLaborales.getString("fecha_bruta") + " - " + diasLaborales.getString("nombre_dia"));
+            }
+            // Fin de Semana
+            while(finSemana.next()) {
+                dataset.setValue(Integer.parseInt(finSemana.getString("cant_pasajeros")), "Fin de Semana", finSemana.getString("fecha_bruta") + " - " + finSemana.getString("nombre_dia"));
+            }
+            // Dias Festivos
+            while(diasFestivos.next()) {
+                dataset.setValue(Integer.parseInt(diasFestivos.getString("cant_pasajeros")), "Dias Festivos", diasFestivos.getString("fecha_bruta") + " - " + diasFestivos.getString("nombre_dia"));
+            }
+            // Dias Feriados
+            while(diasFeriados.next()) {
+                dataset.setValue(Integer.parseInt(diasFeriados.getString("cant_pasajeros")), "Dias Feriados", diasFeriados.getString("fecha_bruta") + " - " + diasFeriados.getString("nombre_dia"));
+            }
+            
+            
+            graficaReporte5 = ChartFactory.createBarChart("Reporte5",
+                    "Franja Horaria", "Cantidad Pasajeros", dataset, PlotOrientation.VERTICAL,
+                    true, true, false);
+            
+            
+            
+            ChartPanel gPanel = new ChartPanel(graficaReporte5);
+            
+            gui.panelGraficas.removeAll();
+            gui.panelGraficas.add(gPanel);
+            gui.panelGraficas.updateUI();
+            gui.pack();
+            
+        } catch (SQLException ex) {
+            log("Error al crear DataSet para la grafica de Reporte5");
+        }
+    }
+    
+    
+    
+    
+    public static void guardarGrafica() {
+        if(gui.panelGraficas.getComponentCount() > 0) {
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivo JPG", "jpg");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showSaveDialog(gui);
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+                String pathGrafica = chooser.getSelectedFile().getAbsolutePath();
+                try {
+                    if(gui.groupReportes.isSelected(gui.radioReporte1.getModel())) {
+                        ChartUtilities.saveChartAsJPEG(new File(pathGrafica), graficaReporte1, 500, 300);
+                    }
+                    if(gui.groupReportes.isSelected(gui.radioReporte2.getModel())) {
+                        ChartUtilities.saveChartAsJPEG(new File(pathGrafica), graficaReporte2, 500, 300);
+                    }
+                    if(gui.groupReportes.isSelected(gui.radioReporte3.getModel())) {
+                        ChartUtilities.saveChartAsJPEG(new File(pathGrafica), graficaReporte3, 500, 300);
+                    }
+                    if(gui.groupReportes.isSelected(gui.radioReporte4.getModel())) {
+                        ChartUtilities.saveChartAsJPEG(new File(pathGrafica), graficaReporte4, 500, 300);
+                    }
+                    if(gui.groupReportes.isSelected(gui.radioReporte5.getModel())) {
+                        ChartUtilities.saveChartAsJPEG(new File(pathGrafica), graficaReporte5, 500, 300);
+                    }
+                } catch (IOException ex) {
+                    log("Error al generar archivo de imagen del reporte " + ex.getMessage());
+                }
+                log("Guarda imagen de reporte " + pathGrafica);
+            }
         }
     }
     
