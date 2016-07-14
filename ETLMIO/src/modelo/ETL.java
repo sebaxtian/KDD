@@ -143,7 +143,7 @@ public class ETL {
                     System.out.println("Abre Libro Excel: " + fileExcel.getName());
                     
                     // Se extrae la dimension Fecha
-                    this.extraerDimFecha(fileExcel.getName());
+                    String fechaBruta = this.extraerDimFecha(fileExcel.getName());
                     
                     // Itera por cada Hoja, Fila y Celda de un Libro Excel
                     for(Sheet hojaExcel : libroExcel ) {
@@ -156,7 +156,7 @@ public class ETL {
                         }
                         */
                         // Se extrae la dimension Tiempo
-                        this.extraerDimTiempo(hojaExcel.getSheetName());
+                        String tiempoBruto = this.extraerDimTiempo(hojaExcel.getSheetName());
                         
                         
                         for(Row fila : hojaExcel) {
@@ -191,8 +191,13 @@ public class ETL {
                                     cantPasajeros = (int)celdaN.getNumericCellValue();
                                 }
                                 
+                                
+                                
+                                // Log
+                                System.out.println(fechaBruta + " - " + tiempoBruto + " - " + estacionOruta + " - " + cantPasajeros);
+                                
+                                
                                 // Se extrae la tabla de hechos Frecuencias
-                                //this.extraerTablaFrecuencias(tmpFecha, tmpTiempo, estacionOruta, cantPasajeros);
                                 // Select en dim_ruta_estacion del id_ruta_estacion
                                 int id_ruta_estacion = connectionDB.selectIdRutaEstacion(estacionOruta);
                                 if(id_ruta_estacion != -1 && id_ruta_estacion != 0) {
@@ -217,7 +222,7 @@ public class ETL {
                 fileExcel = null;
                 System.gc();
                 // Imprime cuantos archivos Excel faltan procesar
-                System.out.println("Numero de Archivos Excel por Procesar: " + (numArchivosExcel--));
+                System.out.println("Numero de Archivos Excel por Procesar: " + (numArchivosExcel-2));
             }
         }
     }
@@ -232,7 +237,7 @@ public class ETL {
      * 
      * @param nombreArchivo 
      */
-    private void extraerDimFecha(String nombreArchivo) {
+    private String extraerDimFecha(String nombreArchivo) {
         // Fecha con formato bruto
         String fechaBruta = nombreArchivo.substring(0, 6);
         
@@ -362,6 +367,9 @@ public class ETL {
             System.err.println("Error al transformar nombre de libro en Formato Fecha");
             ex.printStackTrace();
         }
+        
+        
+        return fechaBruta;
     }
     
     
@@ -374,7 +382,7 @@ public class ETL {
      * 
      * @param nombreHoja 
      */
-    private void extraerDimTiempo(String nombreHoja) {
+    private String extraerDimTiempo(String nombreHoja) {
         //System.out.println("Hoja del Libro: " + nombreHoja);
         String tiempoBruto = nombreHoja.substring(4, nombreHoja.length());
         
@@ -411,6 +419,9 @@ public class ETL {
             }
         //}
         
+        
+        return tiempoBruto;
+        
     }
     
     
@@ -423,11 +434,12 @@ public class ETL {
      * 
      * @param fila 
      */
-    private void extraerDimRutaEstacion(Row fila) {
+    private String extraerDimRutaEstacion(Row fila) {
+        String estacionOruta = "";
         for(Cell celda : fila) {
             // Los nombre de Estacion y Ruta son de tipo string
             if(celda.getCellType() == Cell.CELL_TYPE_STRING) {
-                String estacionOruta = celda.getRichStringCellValue().getString();
+                estacionOruta = celda.getRichStringCellValue().getString();
                 // Se omiten valores
                 if(!estacionOruta.equals("ORIGEN \\ DESTINO") && !estacionOruta.equals("TOTAL") && !estacionOruta.equals("SIN DATO") && !estacionOruta.equals("SIN HORARIO")) {
                     // Valida que la llave no exista
@@ -457,49 +469,9 @@ public class ETL {
                 }
             }
         }
+        
+        return estacionOruta;
     }
-    
-    
-    
-    /**
-     * Este metodo construye el HashMap de la Tabla de Hechos Frecuencias.
-     * 
-     * La llave del HashMap corresponde a una llave compuesta por las llaves
-     * de fecha, franjaHoraria, estacionOruta.
-     * 
-     * El valor del HashMap corresponde a un String SQL INSERT INTO.
-     * 
-     * Ejemplo:
-     * 
-     * [150509&13-14&A06_2] -> "INSERT INTO frecuencias VALUES (fecha, franjaHoraria, estacionOruta, cantPasajeros);"
-     * 
-     * @param fecha
-     * @param franjaHoraria
-     * @param estacionOruta
-     * @param cantPasajeros 
-     */
-    private void extraerTablaFrecuencias(String fecha, String franjaHoraria, String estacionOruta, int cantPasajeros) {
-        String llave = fecha + "&" + franjaHoraria + "&" + estacionOruta;
-        // Valida que la llave no exista
-        //if(!tabla_frecuencias.containsKey(llave)) {
-            // String SQL INSERT INTO
-            String insertinto = "INSERT INTO frecuencias VALUES (" + fecha + ", " + franjaHoraria + ", " + estacionOruta + ", " + cantPasajeros + ");";
-            // Agrega un nuevo dato al HashMap
-            //tabla_frecuencias.put(llave, insertinto);
-            
-            // Select en dim_ruta_estacion del id_ruta_estacion
-            int id_ruta_estacion = connectionDB.selectIdRutaEstacion(estacionOruta);
-            if(id_ruta_estacion != -1 && id_ruta_estacion != 0) {
-                if(id_fecha != -1 && id_fecha != 0) {
-                    if(id_tiempo != -1 && id_tiempo != 0) {
-                        this.extraerTablaFrecuencias(id_fecha, id_tiempo, id_ruta_estacion, cantPasajeros);
-                    }
-                }
-            }
-        //}
-    }
-    
-    
     
     
     /**

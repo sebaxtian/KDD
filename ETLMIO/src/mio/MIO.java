@@ -10,7 +10,9 @@ import gui.GUI;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import modelo.Carga;
 import modelo.ETL;
+import modelo.Precarga;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 /**
@@ -63,9 +65,19 @@ public class MIO {
             String pathDirFuente = "/home/sebaxtian/Descargas/MatricesSimplificadas";
             String pathDirProcesados = "/home/sebaxtian/Descargas/MatricesProcesadas";
             
+            /*
+            Precarga precarga = new Precarga(pathDirFuente, pathDirProcesados);
+            // Ejecuta
+            precarga.execute();
+            */
+            Carga carga = new Carga(pathDirFuente, pathDirProcesados);
+            // Ejecuta
+            carga.execute();
+            /*
             ETL etl = new ETL(pathDirFuente, pathDirProcesados);
-            
+            // Ejecuta
             etl.execute();
+            */
             
             Date fechaFin = new Date();
             
@@ -92,10 +104,10 @@ public class MIO {
         // TODO code application logic here
         
         // Procesar datos ETL
-        //procesarETL();
+        procesarETL();
         
         // Muestra la interfaz grafica para generar reportes
-        GUI.main(args);
+        //GUI.main(args);
         
     }
     
