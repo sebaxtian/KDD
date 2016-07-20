@@ -151,11 +151,11 @@ public class IRIndexer {
       return filesIndexed;
   }
   
-  
+  /*
  public static void main(String[] args){ 
      try { 
-         String data="/home/sebaxtian/Descargas/data";
-         String index="/home/sebaxtian/Descargas/index";
+         String data="/home/sebaxtian/Descargas/BrowserDoc/data";
+         String index="/home/sebaxtian/Descargas/BrowserDoc/index";
          IRIndexer indexer = null;
          
          try {
@@ -172,7 +172,7 @@ public class IRIndexer {
      }
      
  }
-  
+  */
   
   
 }//end class

@@ -43,7 +43,7 @@ public class SearcherV3 {
   public static void main(String[] args) throws IllegalArgumentException,
         IOException, ParseException {
       
-    String indexDir ="/home/sebaxtian/Descargas/index";
+    String indexDir ="/home/sebaxtian/Descargas/BrowserDoc/index";
     String q = JOptionPane.showInputDialog("Digite su consulta");                 //2   
 
     search(indexDir, q);

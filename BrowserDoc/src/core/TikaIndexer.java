@@ -76,8 +76,8 @@ public class TikaIndexer extends IRIndexer {
           //String  dataDir=JOptionPane.showInputDialog("Digite la ruta de los datos");
           //String indexDir=JOptionPane.showInputDialog("Digite la ruta del index");
           
-          String dataDir="/home/sebaxtian/Descargas/data";
-          String indexDir="/home/sebaxtian/Descargas/index";
+          String dataDir="/home/sebaxtian/Descargas/BrowserDoc/data";
+          String indexDir="/home/sebaxtian/Descargas/BrowserDoc/index";
           
           
           long start = new Date().getTime();
